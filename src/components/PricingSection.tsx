@@ -10,28 +10,28 @@ const PricingSection = () => {
       nameKey: 'pricing.telegram',
       priceKZT: '20 000 ₸',
       priceUSD: '$40',
-      features: ['Telegram Bot', 'AI Assistant', '24/7 Support'],
+      featuresKey: 'pricing.telegram.features',
       popular: false,
     },
     {
       nameKey: 'pricing.instagram',
       priceKZT: '30 000 ₸',
       priceUSD: '$60',
-      features: ['Instagram/TikTok', 'AI Assistant', 'Auto DM', 'Stories Reply'],
+      featuresKey: 'pricing.instagram.features',
       popular: false,
     },
     {
       nameKey: 'pricing.whatsapp',
       priceKZT: '40 000 ₸',
       priceUSD: '$85',
-      features: ['WhatsApp Business', 'AI Assistant', 'Voice Messages', 'Payment Check'],
+      featuresKey: 'pricing.whatsapp.features',
       popular: true,
     },
     {
       nameKey: 'pricing.fullpack',
       priceKZT: '100 000 ₸',
       priceUSD: '$200',
-      features: ['All Platforms', 'AI Assistant', 'Priority Support', 'All Add-ons'],
+      featuresKey: 'pricing.fullpack.features',
       popular: false,
     },
   ];
@@ -90,7 +90,7 @@ const PricingSection = () => {
 
               {/* Features */}
               <ul className="space-y-3 mb-6">
-                {plan.features.map((feature) => (
+                {t(plan.featuresKey).split('|').map((feature) => (
                   <li key={feature} className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Check className="w-4 h-4 text-primary flex-shrink-0" />
                     {feature}
@@ -134,10 +134,11 @@ const PricingSection = () => {
             </div>
           </div>
 
-          {/* Note */}
-          <p className="text-center text-muted-foreground text-sm mt-6">
-            {t('pricing.note')}
-          </p>
+          {/* Notes */}
+          <div className="text-center text-sm mt-6 space-y-2">
+            <p className="text-foreground font-medium">{t('pricing.note1')}</p>
+            <p className="text-muted-foreground">{t('pricing.note2')}</p>
+          </div>
         </div>
       </div>
     </section>

@@ -63,8 +63,8 @@ const StatsSection = () => {
               >
                 {/* Metric Name */}
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <stat.icon className="w-5 h-5 text-primary" />
+                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0 shadow-lg">
+                    <stat.icon className="w-5 h-5 text-primary-foreground" />
                   </div>
                   <span className="text-sm md:text-base font-medium text-foreground hidden sm:block">
                     {t(`stats.${stat.metric}`)}
