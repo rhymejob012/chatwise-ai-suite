@@ -10,28 +10,28 @@ const PricingSection = () => {
       nameKey: 'pricing.telegram',
       priceKZT: '20 000 ₸',
       priceUSD: '$40',
-      featuresKey: 'pricing.telegram.features',
+      requirementsKey: 'pricing.telegram.requirements',
       popular: false,
     },
     {
       nameKey: 'pricing.instagram',
       priceKZT: '30 000 ₸',
       priceUSD: '$60',
-      featuresKey: 'pricing.instagram.features',
+      requirementsKey: 'pricing.instagram.requirements',
       popular: false,
     },
     {
       nameKey: 'pricing.whatsapp',
       priceKZT: '40 000 ₸',
       priceUSD: '$85',
-      featuresKey: 'pricing.whatsapp.features',
+      requirementsKey: 'pricing.whatsapp.requirements',
       popular: true,
     },
     {
       nameKey: 'pricing.fullpack',
       priceKZT: '100 000 ₸',
       priceUSD: '$200',
-      featuresKey: 'pricing.fullpack.features',
+      requirementsKey: 'pricing.fullpack.requirements',
       popular: false,
     },
   ];
@@ -53,6 +53,7 @@ const PricingSection = () => {
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
             <span className="text-gradient">{t('pricing.title')}</span>
           </h2>
+          <p className="text-muted-foreground text-lg">{t('pricing.requirements.title')}</p>
         </div>
 
         {/* Pricing Cards */}
@@ -84,19 +85,22 @@ const PricingSection = () => {
 
               {/* Price */}
               <div className="mb-6">
-                <div className="text-3xl font-bold text-foreground">{plan.priceKZT}</div>
+                <div className="text-3xl font-bold text-gradient">{plan.priceKZT}</div>
                 <div className="text-muted-foreground text-sm">{plan.priceUSD}</div>
               </div>
 
-              {/* Features */}
-              <ul className="space-y-3 mb-6">
-                {t(plan.featuresKey).split('|').map((feature) => (
-                  <li key={feature} className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Check className="w-4 h-4 text-primary flex-shrink-0" />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
+              {/* Requirements */}
+              <div className="mb-6">
+                <p className="text-xs text-muted-foreground mb-3 font-medium">{t('pricing.requirements.needed')}</p>
+                <ul className="space-y-2">
+                  {t(plan.requirementsKey).split('|').map((requirement, idx) => (
+                    <li key={idx} className="flex items-start gap-2 text-sm text-foreground">
+                      <Check className="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" />
+                      <span>{requirement}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
               {/* CTA */}
               <Button

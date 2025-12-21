@@ -62,14 +62,16 @@ const translations: Record<Language, Record<string, string>> = {
     
     // Pricing
     'pricing.title': 'Тарифы',
+    'pricing.requirements.title': 'Что нужно для подключения',
+    'pricing.requirements.needed': 'Требования:',
     'pricing.telegram': 'Telegram AI',
-    'pricing.telegram.features': 'Telegram бот|AI ассистент|Поддержка 24/7',
+    'pricing.telegram.requirements': 'API токен бота|Описание задач для ИИ|Токен GPT или Gemini|Facebook логин и пароль|Gmail аккаунт',
     'pricing.instagram': 'Instagram/TikTok AI',
-    'pricing.instagram.features': 'Instagram/TikTok|AI ассистент|Авто DM|Ответы на Stories',
+    'pricing.instagram.requirements': 'Логин и пароль аккаунта|Facebook логин и пароль|Описание задач для ИИ|Токен GPT или Gemini|Gmail аккаунт',
     'pricing.whatsapp': 'WhatsApp AI',
-    'pricing.whatsapp.features': 'WhatsApp Business|AI ассистент|Голосовые сообщения|Проверка оплаты',
+    'pricing.whatsapp.requirements': 'Facebook логин и пароль|Описание задач для ИИ|Токен GPT или Gemini|Документ ИП/ТОО или сайт|Gmail аккаунт',
     'pricing.fullpack': 'Full Pack',
-    'pricing.fullpack.features': 'Все платформы|AI ассистент|Приоритетная поддержка|Все функции',
+    'pricing.fullpack.requirements': 'Facebook аккаунт|Токен GPT или Gemini|Документ ИП/ТОО|Токен бота Telegram|Gmail аккаунт',
     'pricing.popular': 'Популярный',
     'pricing.addons': 'Дополнительные функции (не входят в стоимость)',
     'pricing.addon.audio': 'Распознавание аудио',
@@ -162,14 +164,16 @@ const translations: Record<Language, Record<string, string>> = {
     
     // Pricing
     'pricing.title': 'Тарифтер',
+    'pricing.requirements.title': 'Қосылу үшін не қажет',
+    'pricing.requirements.needed': 'Талаптар:',
     'pricing.telegram': 'Telegram AI',
-    'pricing.telegram.features': 'Telegram бот|AI көмекші|24/7 қолдау',
+    'pricing.telegram.requirements': 'Бот API токені|AI үшін тапсырмалар сипаттамасы|GPT немесе Gemini токені|Facebook логин және пароль|Gmail аккаунты',
     'pricing.instagram': 'Instagram/TikTok AI',
-    'pricing.instagram.features': 'Instagram/TikTok|AI көмекші|Авто DM|Stories жауаптары',
+    'pricing.instagram.requirements': 'Аккаунт логин және пароль|Facebook логин және пароль|AI үшін тапсырмалар сипаттамасы|GPT немесе Gemini токені|Gmail аккаунты',
     'pricing.whatsapp': 'WhatsApp AI',
-    'pricing.whatsapp.features': 'WhatsApp Business|AI көмекші|Дауыс хабарлар|Төлем тексеру',
+    'pricing.whatsapp.requirements': 'Facebook логин және пароль|AI үшін тапсырмалар сипаттамасы|GPT немесе Gemini токені|ЖК/ЖШС құжаты немесе сайт|Gmail аккаунты',
     'pricing.fullpack': 'Full Pack',
-    'pricing.fullpack.features': 'Барлық платформалар|AI көмекші|Басым қолдау|Барлық функциялар',
+    'pricing.fullpack.requirements': 'Facebook аккаунты|GPT немесе Gemini токені|ЖК/ЖШС құжаты|Telegram бот токені|Gmail аккаунты',
     'pricing.popular': 'Танымал',
     'pricing.addons': 'Қосымша функциялар (бағаға кірмейді)',
     'pricing.addon.audio': 'Аудио тану',
@@ -262,14 +266,16 @@ const translations: Record<Language, Record<string, string>> = {
     
     // Pricing
     'pricing.title': 'Pricing',
+    'pricing.requirements.title': 'What you need to connect',
+    'pricing.requirements.needed': 'Requirements:',
     'pricing.telegram': 'Telegram AI',
-    'pricing.telegram.features': 'Telegram Bot|AI Assistant|24/7 Support',
+    'pricing.telegram.requirements': 'Bot API token|AI task description|GPT or Gemini token|Facebook login & password|Gmail account',
     'pricing.instagram': 'Instagram/TikTok AI',
-    'pricing.instagram.features': 'Instagram/TikTok|AI Assistant|Auto DM|Stories Reply',
+    'pricing.instagram.requirements': 'Account login & password|Facebook login & password|AI task description|GPT or Gemini token|Gmail account',
     'pricing.whatsapp': 'WhatsApp AI',
-    'pricing.whatsapp.features': 'WhatsApp Business|AI Assistant|Voice Messages|Payment Check',
+    'pricing.whatsapp.requirements': 'Facebook login & password|AI task description|GPT or Gemini token|IE/LLP document or website|Gmail account',
     'pricing.fullpack': 'Full Pack',
-    'pricing.fullpack.features': 'All Platforms|AI Assistant|Priority Support|All Features',
+    'pricing.fullpack.requirements': 'Facebook account|GPT or Gemini token|IE/LLP document|Telegram bot token|Gmail account',
     'pricing.popular': 'Popular',
     'pricing.addons': 'Additional Features (not included in price)',
     'pricing.addon.audio': 'Audio Recognition',
@@ -329,7 +335,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
 
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
-  if (!context) {
+  if (context === undefined) {
     throw new Error('useLanguage must be used within a LanguageProvider');
   }
   return context;

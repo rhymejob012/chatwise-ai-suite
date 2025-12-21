@@ -87,7 +87,7 @@ const StatsSection = () => {
 
                 {/* Result */}
                 <div className="flex items-center justify-center">
-                  <span className="text-sm md:text-base font-medium text-accent-foreground bg-accent/20 px-3 py-1 rounded-full text-center">
+                  <span className="text-sm md:text-base font-semibold text-primary-foreground bg-gradient-to-r from-primary to-accent px-4 py-2 rounded-full text-center shadow-lg">
                     {t(`stats.${stat.metric}.result`)}
                   </span>
                 </div>
