@@ -1,13 +1,23 @@
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Send } from 'lucide-react';
+import useScrollReveal from '@/hooks/useScrollReveal';
+import logo from '@/assets/logo.png';
 
 const Footer = () => {
   const { t } = useLanguage();
+  const { ref, isRevealed } = useScrollReveal();
 
   return (
-    <footer className="py-16 border-t border-border/50 relative">
-      <div className="container mx-auto px-4">
+    <footer className="py-16 border-t border-border/50 relative overflow-hidden">
+      {/* Background elements */}
+      <div className="absolute bottom-0 left-1/4 w-72 h-72 bg-primary/5 rounded-full blur-[80px]" />
+      <div className="absolute top-0 right-1/3 w-64 h-64 bg-secondary/5 rounded-full blur-[80px]" />
+
+      <div 
+        ref={ref}
+        className={`container mx-auto px-4 relative z-10 scroll-reveal ${isRevealed ? 'revealed' : ''}`}
+      >
         <div className="max-w-4xl mx-auto text-center">
           {/* CTA */}
           <Button
@@ -28,9 +38,7 @@ const Footer = () => {
           {/* Logo & Copyright */}
           <div className="flex flex-col items-center gap-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center">
-                <span className="text-primary-foreground font-bold">C</span>
-              </div>
+              <img src={logo} alt="ChatWise Logo" className="w-10 h-10" />
               <span className="text-xl font-bold text-foreground">ChatWise</span>
             </div>
             <p className="text-muted-foreground text-xs">

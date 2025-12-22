@@ -5,10 +5,13 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Send, Sparkles } from 'lucide-react';
+import useScrollReveal from '@/hooks/useScrollReveal';
 
 const ContactSection = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
+  const { ref: titleRef, isRevealed: titleRevealed } = useScrollReveal();
+  const { ref: formRef, isRevealed: formRevealed } = useScrollReveal();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -33,18 +36,28 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="py-24 relative">
-      <div className="container mx-auto px-4">
+    <section id="contact" className="py-24 relative overflow-hidden">
+      {/* Background elements */}
+      <div className="absolute top-1/3 left-1/4 w-72 h-72 bg-accent/10 rounded-full blur-[100px]" />
+      <div className="absolute bottom-1/4 right-1/3 w-80 h-80 bg-primary/10 rounded-full blur-[100px]" />
+
+      <div className="container mx-auto px-4 relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <div 
+          ref={titleRef}
+          className={`text-center mb-16 scroll-reveal ${titleRevealed ? 'revealed' : ''}`}
+        >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
             <span className="text-gradient">{t('contact.title')}</span>
           </h2>
         </div>
 
         {/* Contact Form */}
-        <div className="max-w-xl mx-auto">
-          <form onSubmit={handleSubmit} className="space-y-6">
+        <div 
+          ref={formRef}
+          className={`max-w-xl mx-auto scroll-reveal-scale ${formRevealed ? 'revealed' : ''}`}
+        >
+          <form onSubmit={handleSubmit} className="space-y-6 p-8 rounded-2xl glass-card">
             <div className="space-y-4">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
@@ -54,7 +67,7 @@ const ContactSection = () => {
                   id="name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="bg-card/50 border-border/50 focus:border-primary"
+                  className="bg-background/50 border-border/50 focus:border-primary transition-colors"
                   required
                 />
               </div>
@@ -67,7 +80,7 @@ const ContactSection = () => {
                   id="city"
                   value={formData.city}
                   onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                  className="bg-card/50 border-border/50 focus:border-primary"
+                  className="bg-background/50 border-border/50 focus:border-primary transition-colors"
                   required
                 />
               </div>
@@ -80,7 +93,7 @@ const ContactSection = () => {
                   id="idea"
                   value={formData.idea}
                   onChange={(e) => setFormData({ ...formData, idea: e.target.value })}
-                  className="bg-card/50 border-border/50 focus:border-primary min-h-[120px]"
+                  className="bg-background/50 border-border/50 focus:border-primary min-h-[120px] transition-colors"
                   required
                 />
               </div>
