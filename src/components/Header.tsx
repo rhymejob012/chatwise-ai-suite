@@ -8,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import logo from '@/assets/logo.png';
 
 const Header = () => {
   const { language, setLanguage, t } = useLanguage();
@@ -41,9 +42,7 @@ const Header = () => {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <a href="#hero" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-lg md:text-xl">C</span>
-            </div>
+            <img src={logo} alt="ChatWise Logo" className="w-10 h-10 md:w-12 md:h-12" />
             <span className="text-xl md:text-2xl font-bold text-foreground group-hover:text-primary transition-colors">
               ChatWise
             </span>
@@ -55,9 +54,10 @@ const Header = () => {
               <button
                 key={item.key}
                 onClick={() => scrollToSection(item.href)}
-                className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium"
+                className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium relative group"
               >
                 {t(item.key)}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
               </button>
             ))}
           </nav>
@@ -115,7 +115,7 @@ const Header = () => {
                 <button
                   key={item.key}
                   onClick={() => scrollToSection(item.href)}
-                  className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium py-2 text-left"
+                  className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium py-2 text-left"
                 >
                   {t(item.key)}
                 </button>
