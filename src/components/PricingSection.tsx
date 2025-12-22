@@ -32,9 +32,10 @@ const PricingSection = () => {
     },
     {
       nameKey: 'pricing.fullpack',
-      priceKZT: '100 000 ₸',
-      priceUSD: '$200',
+      priceKZT: '300 000 ₸',
+      priceUSD: '$600',
       requirementsKey: 'pricing.fullpack.requirements',
+      featuresKey: 'pricing.fullpack.features',
       popular: false,
     },
   ];
@@ -46,6 +47,11 @@ const PricingSection = () => {
     { icon: Table, key: 'pricing.addon.tables' },
     { icon: Bell, key: 'pricing.addon.notifications' },
     { icon: MessageSquare, key: 'pricing.addon.direct' },
+  ];
+
+  const socialAddons = [
+    { icon: MessageSquare, key: 'pricing.addon.comments' },
+    { icon: Bell, key: 'pricing.addon.files' },
   ];
 
   return (
@@ -115,6 +121,21 @@ const PricingSection = () => {
                   </ul>
                 </div>
 
+                {/* Full Pack Features */}
+                {plan.featuresKey && (
+                  <div className="mb-6 p-3 rounded-lg bg-secondary/10 border border-secondary/20">
+                    <p className="text-xs text-secondary mb-2 font-medium">{t('pricing.included')}</p>
+                    <ul className="space-y-1">
+                      {t(plan.featuresKey).split('|').map((feature, idx) => (
+                        <li key={idx} className="flex items-start gap-2 text-xs text-foreground">
+                          <Star className="w-3 h-3 text-accent flex-shrink-0 mt-0.5" />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
                 {/* CTA */}
                 <Button
                   variant={plan.popular ? 'glow' : 'outline'}
@@ -142,7 +163,7 @@ const PricingSection = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
               {addons.map((addon) => (
                 <div
                   key={addon.key}
@@ -152,6 +173,22 @@ const PricingSection = () => {
                   <span className="text-sm text-foreground">{t(addon.key)}</span>
                 </div>
               ))}
+            </div>
+
+            {/* Social Media Addons */}
+            <div className="pt-4 border-t border-border/30">
+              <p className="text-sm text-secondary font-medium mb-3">{t('pricing.social.title')}</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {socialAddons.map((addon) => (
+                  <div
+                    key={addon.key}
+                    className="flex items-center gap-3 p-3 rounded-lg bg-accent/10 border border-accent/20 hover:border-accent/40 transition-all duration-300"
+                  >
+                    <addon.icon className="w-5 h-5 text-accent flex-shrink-0" />
+                    <span className="text-sm text-foreground">{t(addon.key)}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
