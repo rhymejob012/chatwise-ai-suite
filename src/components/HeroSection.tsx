@@ -9,7 +9,7 @@ import whatsappLogo from '@/assets/whatsapp.png';
 import instagramLogo from '@/assets/instagram.png';
 import tiktokLogo from '@/assets/tiktok.png';
 import facebookLogo from '@/assets/facebook.png';
-import youtubeLogo from '@/assets/youtube.png';
+
 
 const HeroSection = () => {
   const { t } = useLanguage();
@@ -20,7 +20,6 @@ const HeroSection = () => {
     { image: instagramLogo, label: 'Instagram' },
     { image: tiktokLogo, label: 'TikTok' },
     { image: facebookLogo, label: 'Facebook' },
-    { image: youtubeLogo, label: 'YouTube' },
   ];
 
   return (
