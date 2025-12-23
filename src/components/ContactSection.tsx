@@ -4,15 +4,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { Send, Sparkles, Phone, MessageCircle } from 'lucide-react';
+import { Send, Sparkles } from 'lucide-react';
 import useScrollReveal from '@/hooks/useScrollReveal';
 
 // Import social icons
-import whatsappIcon from '@/assets/whatsapp.png';
-import telegramIcon from '@/assets/telegram.png';
-import tiktokIcon from '@/assets/tiktok.png';
-import instagramIcon from '@/assets/instagram.png';
-import threadsIcon from '@/assets/threads.png';
+import phoneIcon from '@/assets/phone-icon.png';
+import whatsappIcon from '@/assets/whatsapp-icon.png';
+import telegramIcon from '@/assets/telegram-icon.png';
+import instagramIcon from '@/assets/instagram-icon.png';
+import tiktokIcon from '@/assets/tiktok-icon.png';
 
 const ContactSection = () => {
   const { t } = useLanguage();
@@ -28,12 +28,11 @@ const ContactSection = () => {
   });
 
   const contacts = [
-    { icon: whatsappIcon, label: 'WhatsApp', link: 'https://wa.me/77066873167', isImage: true },
-    { icon: Phone, label: '+7 706 687 31 67', link: 'tel:+77066873167', isImage: false },
-    { icon: telegramIcon, label: 'Telegram', link: 'https://t.me/+77066873167', isImage: true },
-    { icon: tiktokIcon, label: 'TikTok @chatwise_kz', link: 'https://tiktok.com/@chatwise_kz', isImage: true },
-    { icon: instagramIcon, label: 'Instagram @chatwise_kz', link: 'https://instagram.com/chatwise_kz', isImage: true },
-    { icon: threadsIcon, label: 'Threads @chatwise_kz', link: 'https://threads.net/@chatwise_kz', isImage: true },
+    { icon: phoneIcon, label: '+7 706 687 31 67', link: 'tel:+77066873167' },
+    { icon: whatsappIcon, label: 'WhatsApp', link: 'https://wa.me/77066873167' },
+    { icon: telegramIcon, label: 'Telegram', link: 'https://t.me/+77066873167' },
+    { icon: instagramIcon, label: 'Instagram @chatwise_kz', link: 'https://instagram.com/chatwise_kz' },
+    { icon: tiktokIcon, label: 'TikTok @chatwise_kz', link: 'https://tiktok.com/@chatwise_kz' },
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -142,7 +141,8 @@ const ContactSection = () => {
             className={`scroll-reveal-right ${contactsRevealed ? 'revealed' : ''}`}
           >
             <div className="p-8 rounded-2xl glass-card h-full">
-              <h3 className="text-xl font-semibold text-foreground mb-6">Контакты</h3>
+              <h3 className="text-xl font-semibold text-foreground mb-2">Контакты</h3>
+              <p className="text-sm text-muted-foreground mb-6">(ассистенты без ИИ)</p>
               <div className="space-y-4">
                 {contacts.map((contact, index) => (
                   <a
@@ -152,11 +152,7 @@ const ContactSection = () => {
                     rel="noopener noreferrer"
                     className="flex items-center gap-4 p-4 rounded-xl bg-background/50 border border-border/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 group"
                   >
-                    {contact.isImage ? (
-                      <img src={contact.icon as string} alt={contact.label} className="w-8 h-8 object-contain" />
-                    ) : (
-                      <contact.icon className="w-8 h-8 text-primary" />
-                    )}
+                    <img src={contact.icon} alt={contact.label} className="w-8 h-8 object-contain" />
                     <span className="text-foreground group-hover:text-primary transition-colors font-medium">
                       {contact.label}
                     </span>
