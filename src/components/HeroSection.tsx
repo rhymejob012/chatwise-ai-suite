@@ -68,22 +68,25 @@ const HeroSection = () => {
             </div>
 
             {/* Platform Icons */}
-            <div className="flex items-center justify-center lg:justify-start gap-4 md:gap-6 animate-fade-in animation-delay-400">
-              {platforms.map((platform, index) => (
-                <div
-                  key={platform.label}
-                  className="group cursor-pointer animate-bounce-subtle"
-                  style={{ animationDelay: `${index * 200}ms` }}
-                >
-                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl overflow-hidden group-hover:scale-110 transition-transform duration-300 hover:shadow-lg hover:shadow-primary/30">
-                    <img 
-                      src={platform.image} 
-                      alt={platform.label}
-                      className="w-full h-full object-cover"
-                    />
+            <div className="animate-fade-in animation-delay-400">
+              <p className="text-muted-foreground text-sm mb-4">{t('hero.platforms')}</p>
+              <div className="flex items-center justify-center lg:justify-start gap-4 md:gap-6">
+                {platforms.map((platform, index) => (
+                  <div
+                    key={platform.label}
+                    className="group cursor-pointer animate-bounce-subtle"
+                    style={{ animationDelay: `${index * 200}ms` }}
+                  >
+                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl overflow-hidden group-hover:scale-110 transition-transform duration-300 hover:shadow-lg hover:shadow-primary/30">
+                      <img 
+                        src={platform.image} 
+                        alt={platform.label}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
 

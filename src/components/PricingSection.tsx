@@ -1,6 +1,6 @@
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
-import { Check, Mic, Receipt, Database, Table, Bell, MessageSquare, Star } from 'lucide-react';
+import { Check, Mic, Receipt, Database, Table, Bell, MessageSquare, Star, FileText } from 'lucide-react';
 import useScrollReveal from '@/hooks/useScrollReveal';
 
 const PricingSection = () => {
@@ -15,6 +15,7 @@ const PricingSection = () => {
       priceUSD: '$40',
       requirementsKey: 'pricing.telegram.requirements',
       popular: false,
+      isFullPack: false,
     },
     {
       nameKey: 'pricing.instagram',
@@ -22,6 +23,7 @@ const PricingSection = () => {
       priceUSD: '$60',
       requirementsKey: 'pricing.instagram.requirements',
       popular: false,
+      isFullPack: false,
     },
     {
       nameKey: 'pricing.whatsapp',
@@ -29,13 +31,15 @@ const PricingSection = () => {
       priceUSD: '$85',
       requirementsKey: 'pricing.whatsapp.requirements',
       popular: true,
+      isFullPack: false,
     },
     {
       nameKey: 'pricing.fullpack',
-      priceKZT: '100 000 ₸',
-      priceUSD: '$200',
+      priceKZT: '300 000 ₸',
+      priceUSD: '$600',
       requirementsKey: 'pricing.fullpack.requirements',
       popular: false,
+      isFullPack: true,
     },
   ];
 
@@ -46,6 +50,19 @@ const PricingSection = () => {
     { icon: Table, key: 'pricing.addon.tables' },
     { icon: Bell, key: 'pricing.addon.notifications' },
     { icon: MessageSquare, key: 'pricing.addon.direct' },
+  ];
+
+  const socialAddons = [
+    { icon: MessageSquare, key: 'pricing.addon.comments' },
+    { icon: FileText, key: 'pricing.addon.files' },
+  ];
+
+  const fullPackFeatures = [
+    'pricing.fullpack.feature1',
+    'pricing.fullpack.feature2',
+    'pricing.fullpack.feature3',
+    'pricing.fullpack.feature4',
+    'pricing.fullpack.feature5',
   ];
 
   return (
@@ -103,7 +120,7 @@ const PricingSection = () => {
                 </div>
 
                 {/* Requirements */}
-                <div className="mb-6">
+                <div className="mb-4">
                   <p className="text-xs text-muted-foreground mb-3 font-medium">{t('pricing.requirements.needed')}</p>
                   <ul className="space-y-2">
                     {t(plan.requirementsKey).split('|').map((requirement, idx) => (
@@ -114,6 +131,23 @@ const PricingSection = () => {
                     ))}
                   </ul>
                 </div>
+
+                {/* Full Pack Included Features */}
+                {plan.isFullPack && (
+                  <div className="mb-6 p-3 rounded-lg bg-accent/10 border border-accent/30">
+                    <p className="text-xs text-accent font-medium mb-2">{t('pricing.fullpack.includes')}</p>
+                    <ul className="space-y-1">
+                      {fullPackFeatures.map((feature, idx) => (
+                        <li key={idx} className="flex items-start gap-2 text-xs text-foreground">
+                          <Star className="w-3 h-3 text-accent flex-shrink-0 mt-0.5" />
+                          <span>{t(feature)}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {!plan.isFullPack && <div className="mb-6" />}
 
                 {/* CTA */}
                 <Button
@@ -132,7 +166,7 @@ const PricingSection = () => {
           ref={addonsRef}
           className={`max-w-4xl mx-auto scroll-reveal ${addonsRevealed ? 'revealed' : ''}`}
         >
-          <div className="p-6 md:p-8 rounded-2xl glass-card">
+          <div className="p-6 md:p-8 rounded-2xl glass-card mb-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
               <h3 className="text-xl font-semibold text-foreground mb-2 md:mb-0">
                 {t('pricing.addons')}
@@ -147,6 +181,24 @@ const PricingSection = () => {
                 <div
                   key={addon.key}
                   className="flex items-center gap-3 p-3 rounded-lg bg-background/50 border border-border/30 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300"
+                >
+                  <addon.icon className="w-5 h-5 text-accent flex-shrink-0" />
+                  <span className="text-sm text-foreground">{t(addon.key)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Social Media Add-ons */}
+          <div className="p-6 md:p-8 rounded-2xl glass-card mb-6">
+            <h3 className="text-lg font-semibold text-foreground mb-4">
+              {t('pricing.addons.social')}
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {socialAddons.map((addon) => (
+                <div
+                  key={addon.key}
+                  className="flex items-center gap-3 p-3 rounded-lg bg-background/50 border border-accent/30 hover:border-accent/50 hover:bg-accent/5 transition-all duration-300"
                 >
                   <addon.icon className="w-5 h-5 text-accent flex-shrink-0" />
                   <span className="text-sm text-foreground">{t(addon.key)}</span>
