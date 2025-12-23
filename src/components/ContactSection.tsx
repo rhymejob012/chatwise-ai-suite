@@ -4,20 +4,37 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { Send, Sparkles } from 'lucide-react';
+import { Send, Sparkles, Phone, MessageCircle } from 'lucide-react';
 import useScrollReveal from '@/hooks/useScrollReveal';
+
+// Import social icons
+import whatsappIcon from '@/assets/whatsapp.png';
+import telegramIcon from '@/assets/telegram.png';
+import tiktokIcon from '@/assets/tiktok.png';
+import instagramIcon from '@/assets/instagram.png';
+import threadsIcon from '@/assets/threads.png';
 
 const ContactSection = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
   const { ref: titleRef, isRevealed: titleRevealed } = useScrollReveal();
   const { ref: formRef, isRevealed: formRevealed } = useScrollReveal();
+  const { ref: contactsRef, isRevealed: contactsRevealed } = useScrollReveal();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     city: '',
     idea: '',
   });
+
+  const contacts = [
+    { icon: whatsappIcon, label: 'WhatsApp', link: 'https://wa.me/77066873167', isImage: true },
+    { icon: Phone, label: '+7 706 687 31 67', link: 'tel:+77066873167', isImage: false },
+    { icon: telegramIcon, label: 'Telegram', link: 'https://t.me/+77066873167', isImage: true },
+    { icon: tiktokIcon, label: 'TikTok @chatwise_kz', link: 'https://tiktok.com/@chatwise_kz', isImage: true },
+    { icon: instagramIcon, label: 'Instagram @chatwise_kz', link: 'https://instagram.com/chatwise_kz', isImage: true },
+    { icon: threadsIcon, label: 'Threads @chatwise_kz', link: 'https://threads.net/@chatwise_kz', isImage: true },
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,70 +69,102 @@ const ContactSection = () => {
           </h2>
         </div>
 
-        {/* Contact Form */}
-        <div 
-          ref={formRef}
-          className={`max-w-xl mx-auto scroll-reveal-scale ${formRevealed ? 'revealed' : ''}`}
-        >
-          <form onSubmit={handleSubmit} className="space-y-6 p-8 rounded-2xl glass-card">
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
-                  {t('contact.name')}
-                </label>
-                <Input
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="bg-background/50 border-border/50 focus:border-primary transition-colors"
-                  required
-                />
+        <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
+          {/* Contact Form */}
+          <div 
+            ref={formRef}
+            className={`scroll-reveal-scale ${formRevealed ? 'revealed' : ''}`}
+          >
+            <form onSubmit={handleSubmit} className="space-y-6 p-8 rounded-2xl glass-card">
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
+                    {t('contact.name')}
+                  </label>
+                  <Input
+                    id="name"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="bg-background/50 border-border/50 focus:border-primary transition-colors"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="city" className="block text-sm font-medium text-foreground mb-2">
+                    {t('contact.city')}
+                  </label>
+                  <Input
+                    id="city"
+                    value={formData.city}
+                    onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                    className="bg-background/50 border-border/50 focus:border-primary transition-colors"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="idea" className="block text-sm font-medium text-foreground mb-2">
+                    {t('contact.idea')}
+                  </label>
+                  <Textarea
+                    id="idea"
+                    value={formData.idea}
+                    onChange={(e) => setFormData({ ...formData, idea: e.target.value })}
+                    className="bg-background/50 border-border/50 focus:border-primary min-h-[120px] transition-colors"
+                    required
+                  />
+                </div>
               </div>
 
-              <div>
-                <label htmlFor="city" className="block text-sm font-medium text-foreground mb-2">
-                  {t('contact.city')}
-                </label>
-                <Input
-                  id="city"
-                  value={formData.city}
-                  onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                  className="bg-background/50 border-border/50 focus:border-primary transition-colors"
-                  required
-                />
-              </div>
+              <Button
+                type="submit"
+                variant="glow"
+                size="lg"
+                className="w-full"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <Sparkles className="w-5 h-5 animate-spin" />
+                ) : (
+                  <>
+                    <Send className="w-5 h-5 mr-2" />
+                    {t('contact.submit')}
+                  </>
+                )}
+              </Button>
+            </form>
+          </div>
 
-              <div>
-                <label htmlFor="idea" className="block text-sm font-medium text-foreground mb-2">
-                  {t('contact.idea')}
-                </label>
-                <Textarea
-                  id="idea"
-                  value={formData.idea}
-                  onChange={(e) => setFormData({ ...formData, idea: e.target.value })}
-                  className="bg-background/50 border-border/50 focus:border-primary min-h-[120px] transition-colors"
-                  required
-                />
+          {/* Contact Links */}
+          <div 
+            ref={contactsRef}
+            className={`scroll-reveal-right ${contactsRevealed ? 'revealed' : ''}`}
+          >
+            <div className="p-8 rounded-2xl glass-card h-full">
+              <h3 className="text-xl font-semibold text-foreground mb-6">Контакты</h3>
+              <div className="space-y-4">
+                {contacts.map((contact, index) => (
+                  <a
+                    key={index}
+                    href={contact.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-4 p-4 rounded-xl bg-background/50 border border-border/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 group"
+                  >
+                    {contact.isImage ? (
+                      <img src={contact.icon as string} alt={contact.label} className="w-8 h-8 object-contain" />
+                    ) : (
+                      <contact.icon className="w-8 h-8 text-primary" />
+                    )}
+                    <span className="text-foreground group-hover:text-primary transition-colors font-medium">
+                      {contact.label}
+                    </span>
+                  </a>
+                ))}
               </div>
             </div>
-
-            <Button
-              type="submit"
-              variant="glow"
-              size="lg"
-              className="w-full"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? (
-                <Sparkles className="w-5 h-5 animate-spin" />
-              ) : (
-                <>
-                  <Send className="w-5 h-5 mr-2" />
-                  {t('contact.submit')}
-                </>
-              )}
-            </Button>
-          </form>
+          </div>
         </div>
       </div>
     </section>
