@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
-import { Check, Mic, Receipt, Database, Table, Bell, MessageSquare, Star, Plus, Minus } from 'lucide-react';
+import { Check, Mic, Database, Bell, MessageSquare, Star, Plus, Minus, ShoppingCart } from 'lucide-react';
 import useScrollReveal from '@/hooks/useScrollReveal';
 
-interface PlanState {
+interface PlatformState {
+  selected: boolean;
   selectedAddons: string[];
-  totalKZT: number;
-  totalUSD: number;
 }
 
 const PricingSection = () => {
@@ -15,15 +14,28 @@ const PricingSection = () => {
   const { ref: titleRef, isRevealed: titleRevealed } = useScrollReveal();
   const { ref: addonsRef, isRevealed: addonsRevealed } = useScrollReveal();
 
-  const baseAddons = [
+  // Base addons for Telegram and WhatsApp
+  const telegramWhatsappAddons = [
     { id: 'crm', icon: Database, key: 'pricing.addon.crm' },
     { id: 'audio', icon: Mic, key: 'pricing.addon.audio' },
-    { id: 'checks', icon: Receipt, key: 'pricing.addon.checks' },
-    { id: 'tables', icon: Table, key: 'pricing.addon.tables' },
+    { id: 'checks', icon: MessageSquare, key: 'pricing.addon.checks' },
+    { id: 'tables', icon: MessageSquare, key: 'pricing.addon.tables' },
     { id: 'notifications', icon: Bell, key: 'pricing.addon.notifications' },
   ];
 
-  const socialAddons = [
+  // Addons for Instagram (without checks and tables)
+  const instagramAddons = [
+    { id: 'crm', icon: Database, key: 'pricing.addon.crm' },
+    { id: 'audio', icon: Mic, key: 'pricing.addon.audio' },
+    { id: 'notifications', icon: Bell, key: 'pricing.addon.notifications' },
+    { id: 'files', icon: MessageSquare, key: 'pricing.addon.files' },
+    { id: 'comments', icon: MessageSquare, key: 'pricing.addon.comments' },
+  ];
+
+  // Addons for TikTok (without audio, checks, tables)
+  const tiktokAddons = [
+    { id: 'crm', icon: Database, key: 'pricing.addon.crm' },
+    { id: 'notifications', icon: Bell, key: 'pricing.addon.notifications' },
     { id: 'files', icon: MessageSquare, key: 'pricing.addon.files' },
     { id: 'comments', icon: MessageSquare, key: 'pricing.addon.comments' },
   ];
@@ -37,7 +49,7 @@ const PricingSection = () => {
       requirementsKey: 'pricing.telegram.requirements',
       popular: false,
       isAllPlatforms: false,
-      hasSocialAddons: false,
+      addons: telegramWhatsappAddons,
     },
     {
       id: 'instagram',
@@ -47,7 +59,7 @@ const PricingSection = () => {
       requirementsKey: 'pricing.instagram.requirements',
       popular: false,
       isAllPlatforms: false,
-      hasSocialAddons: true,
+      addons: instagramAddons,
     },
     {
       id: 'tiktok',
@@ -57,7 +69,7 @@ const PricingSection = () => {
       requirementsKey: 'pricing.tiktok.requirements',
       popular: false,
       isAllPlatforms: false,
-      hasSocialAddons: true,
+      addons: tiktokAddons,
     },
     {
       id: 'whatsapp',
@@ -67,7 +79,7 @@ const PricingSection = () => {
       requirementsKey: 'pricing.whatsapp.requirements',
       popular: true,
       isAllPlatforms: false,
-      hasSocialAddons: false,
+      addons: telegramWhatsappAddons,
     },
     {
       id: 'allplatforms',
@@ -77,7 +89,7 @@ const PricingSection = () => {
       requirementsKey: 'pricing.allplatforms.requirements',
       popular: false,
       isAllPlatforms: true,
-      hasSocialAddons: false,
+      addons: [],
     },
   ];
 
@@ -89,21 +101,29 @@ const PricingSection = () => {
     'pricing.allplatforms.feature5',
   ];
 
-  const [planStates, setPlanStates] = useState<Record<string, PlanState>>(() => {
-    const initial: Record<string, PlanState> = {};
+  const [platformStates, setPlatformStates] = useState<Record<string, PlatformState>>(() => {
+    const initial: Record<string, PlatformState> = {};
     plans.forEach(plan => {
       initial[plan.id] = {
+        selected: false,
         selectedAddons: [],
-        totalKZT: plan.baseKZT,
-        totalUSD: plan.baseUSD,
       };
     });
     return initial;
   });
 
+  const togglePlatformSelection = (planId: string) => {
+    setPlatformStates(prev => ({
+      ...prev,
+      [planId]: {
+        ...prev[planId],
+        selected: !prev[planId].selected,
+      },
+    }));
+  };
+
   const toggleAddon = (planId: string, addonId: string) => {
-    setPlanStates(prev => {
-      const plan = plans.find(p => p.id === planId)!;
+    setPlatformStates(prev => {
       const current = prev[planId];
       const isSelected = current.selectedAddons.includes(addonId);
       
@@ -114,29 +134,67 @@ const PricingSection = () => {
       return {
         ...prev,
         [planId]: {
+          ...current,
           selectedAddons: newAddons,
-          totalKZT: plan.baseKZT + (newAddons.length * 10000),
-          totalUSD: plan.baseUSD + (newAddons.length * 20),
         },
       };
     });
   };
 
-  const handleOrder = (planId: string) => {
+  const calculatePlatformTotal = (planId: string) => {
     const plan = plans.find(p => p.id === planId)!;
-    const state = planStates[planId];
+    const state = platformStates[planId];
+    const addonCount = state.selectedAddons.length;
+    return {
+      kzt: plan.baseKZT + (addonCount * 10000),
+      usd: plan.baseUSD + (addonCount * 20),
+    };
+  };
+
+  const calculateGrandTotal = () => {
+    let totalKZT = 0;
+    let totalUSD = 0;
     
-    const platformName = t(plan.nameKey);
-    const selectedFunctionNames = state.selectedAddons.map(addonId => {
-      const addon = [...baseAddons, ...socialAddons].find(a => a.id === addonId);
-      return addon ? t(addon.key) : addonId;
+    plans.forEach(plan => {
+      const state = platformStates[plan.id];
+      if (state.selected) {
+        const planTotal = calculatePlatformTotal(plan.id);
+        totalKZT += planTotal.kzt;
+        totalUSD += planTotal.usd;
+      }
     });
     
-    const functionsText = selectedFunctionNames.length > 0 
-      ? selectedFunctionNames.join(', ') 
-      : '-';
+    return { kzt: totalKZT, usd: totalUSD };
+  };
+
+  const getSelectedPlatformsCount = () => {
+    return plans.filter(p => platformStates[p.id].selected).length;
+  };
+
+  const handleOrder = () => {
+    const selectedPlatforms = plans.filter(p => platformStates[p.id].selected);
     
-    const description = `${t('pricing.orderFor')} ${platformName}. ${t('pricing.functions')} ${functionsText}. ${t('pricing.total')} ${state.totalKZT.toLocaleString()} ₸`;
+    if (selectedPlatforms.length === 0) return;
+    
+    const orderParts = selectedPlatforms.map(plan => {
+      const state = platformStates[plan.id];
+      const platformName = t(plan.nameKey);
+      const total = calculatePlatformTotal(plan.id);
+      
+      const selectedFunctionNames = state.selectedAddons.map(addonId => {
+        const addon = plan.addons.find(a => a.id === addonId);
+        return addon ? t(addon.key) : addonId;
+      });
+      
+      const functionsText = selectedFunctionNames.length > 0 
+        ? selectedFunctionNames.join(', ') 
+        : '-';
+      
+      return `${platformName}: ${functionsText} (${total.kzt.toLocaleString()} ₸)`;
+    });
+    
+    const grandTotal = calculateGrandTotal();
+    const description = `${t('pricing.orderFor')} ${orderParts.join('; ')}. ${t('pricing.total')} ${grandTotal.kzt.toLocaleString()} ₸`;
     
     // Scroll to contact section and set description
     const contactSection = document.getElementById('contact');
@@ -154,11 +212,8 @@ const PricingSection = () => {
     }
   };
 
-  const getAvailableAddons = (plan: typeof plans[0]) => {
-    if (plan.isAllPlatforms) return [];
-    if (plan.hasSocialAddons) return [...baseAddons, ...socialAddons];
-    return baseAddons;
-  };
+  const grandTotal = calculateGrandTotal();
+  const selectedCount = getSelectedPlatformsCount();
 
   return (
     <section id="pricing" className="py-24 relative overflow-hidden">
@@ -179,18 +234,20 @@ const PricingSection = () => {
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 max-w-7xl mx-auto mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 max-w-7xl mx-auto mb-8">
           {plans.map((plan, index) => {
             const { ref, isRevealed } = useScrollReveal(0.1);
-            const state = planStates[plan.id];
-            const availableAddons = getAvailableAddons(plan);
+            const state = platformStates[plan.id];
+            const planTotal = calculatePlatformTotal(plan.id);
 
             return (
               <div
                 key={plan.id}
                 ref={ref}
                 className={`relative p-5 rounded-2xl border backdrop-blur-sm transition-all duration-500 scroll-reveal-scale ${isRevealed ? 'revealed' : ''} ${
-                  plan.popular
+                  state.selected
+                    ? 'bg-gradient-to-b from-primary/30 to-card/80 border-primary ring-2 ring-primary/50'
+                    : plan.popular
                     ? 'bg-gradient-to-b from-primary/20 to-card/80 border-primary/50 lg:scale-105'
                     : 'glass-card hover:border-primary/30'
                 }`}
@@ -206,17 +263,29 @@ const PricingSection = () => {
                   </div>
                 )}
 
+                {/* Selection Checkbox */}
+                <button
+                  onClick={() => togglePlatformSelection(plan.id)}
+                  className={`absolute top-3 right-3 w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all ${
+                    state.selected
+                      ? 'bg-primary border-primary text-primary-foreground'
+                      : 'border-muted-foreground/50 hover:border-primary'
+                  }`}
+                >
+                  {state.selected && <Check className="w-4 h-4" />}
+                </button>
+
                 {/* Plan Name */}
-                <h3 className="text-lg font-semibold text-foreground mb-3">
+                <h3 className="text-lg font-semibold text-foreground mb-3 pr-8">
                   {t(plan.nameKey)}
                 </h3>
 
                 {/* Price */}
                 <div className="mb-4">
                   <div className="text-2xl font-bold text-gradient">
-                    {state.totalKZT.toLocaleString()} ₸
+                    {planTotal.kzt.toLocaleString()} ₸
                   </div>
-                  <div className="text-muted-foreground text-sm">${state.totalUSD}</div>
+                  <div className="text-muted-foreground text-sm">${planTotal.usd}</div>
                 </div>
 
                 {/* Requirements */}
@@ -248,13 +317,13 @@ const PricingSection = () => {
                 )}
 
                 {/* Add-ons for this plan */}
-                {availableAddons.length > 0 && (
+                {plan.addons.length > 0 && (
                   <div className="mb-4">
                     <p className="text-xs text-muted-foreground mb-2 font-medium">
                       {t('pricing.addons')} (+10 000 ₸ / $20)
                     </p>
                     <div className="space-y-1.5">
-                      {availableAddons.map((addon) => {
+                      {plan.addons.map((addon) => {
                         const isSelected = state.selectedAddons.includes(addon.id);
                         return (
                           <button
@@ -286,18 +355,47 @@ const PricingSection = () => {
                     )}
                   </div>
                 )}
-
-                {/* CTA */}
-                <Button
-                  variant={plan.popular ? 'glow' : 'outline'}
-                  className="w-full"
-                  onClick={() => handleOrder(plan.id)}
-                >
-                  {t('pricing.order')}
-                </Button>
               </div>
             );
           })}
+        </div>
+
+        {/* Order Button */}
+        <div className="max-w-2xl mx-auto mb-16">
+          <div className={`p-6 rounded-2xl border backdrop-blur-sm transition-all duration-300 ${
+            selectedCount > 0 
+              ? 'bg-gradient-to-r from-primary/20 to-accent/20 border-primary/50' 
+              : 'glass-card'
+          }`}>
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="text-center sm:text-left">
+                {selectedCount > 0 ? (
+                  <>
+                    <p className="text-sm text-muted-foreground mb-1">
+                      {t('pricing.selected')}: {selectedCount} {selectedCount === 1 ? 'платформа' : selectedCount < 5 ? 'платформы' : 'платформ'}
+                    </p>
+                    <p className="text-2xl font-bold text-gradient">
+                      {grandTotal.kzt.toLocaleString()} ₸ <span className="text-base text-muted-foreground font-normal">/ ${grandTotal.usd}</span>
+                    </p>
+                  </>
+                ) : (
+                  <p className="text-muted-foreground">
+                    {language === 'ru' ? 'Выберите платформы для заказа' : language === 'kz' ? 'Тапсырыс беру үшін платформаларды таңдаңыз' : 'Select platforms to order'}
+                  </p>
+                )}
+              </div>
+              <Button
+                variant="glow"
+                size="lg"
+                className="min-w-[200px]"
+                disabled={selectedCount === 0}
+                onClick={handleOrder}
+              >
+                <ShoppingCart className="w-5 h-5 mr-2" />
+                {t('pricing.order')}
+              </Button>
+            </div>
+          </div>
         </div>
 
         {/* Notes */}
