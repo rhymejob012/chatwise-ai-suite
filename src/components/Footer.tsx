@@ -5,8 +5,13 @@ import useScrollReveal from '@/hooks/useScrollReveal';
 import logo from '@/assets/logo.png';
 
 const Footer = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { ref, isRevealed } = useScrollReveal();
+
+  const getWhatsAppLink = () => {
+    const greeting = t('whatsapp.greeting');
+    return `https://wa.me/77066873167?text=${encodeURIComponent(greeting)}`;
+  };
 
   return (
     <footer className="py-16 border-t border-border/50 relative overflow-hidden">

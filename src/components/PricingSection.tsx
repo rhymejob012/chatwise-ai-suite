@@ -1,69 +1,164 @@
+import { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
-import { Check, Mic, Receipt, Database, Table, Bell, MessageSquare, Star, FileText } from 'lucide-react';
+import { Check, Mic, Receipt, Database, Table, Bell, MessageSquare, Star, Plus, Minus } from 'lucide-react';
 import useScrollReveal from '@/hooks/useScrollReveal';
 
+interface PlanState {
+  selectedAddons: string[];
+  totalKZT: number;
+  totalUSD: number;
+}
+
 const PricingSection = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { ref: titleRef, isRevealed: titleRevealed } = useScrollReveal();
   const { ref: addonsRef, isRevealed: addonsRevealed } = useScrollReveal();
 
-  const plans = [
-    {
-      nameKey: 'pricing.telegram',
-      priceKZT: '20 000 ₸',
-      priceUSD: '$40',
-      requirementsKey: 'pricing.telegram.requirements',
-      popular: false,
-      isFullPack: false,
-    },
-    {
-      nameKey: 'pricing.instagram',
-      priceKZT: '30 000 ₸',
-      priceUSD: '$60',
-      requirementsKey: 'pricing.instagram.requirements',
-      popular: false,
-      isFullPack: false,
-    },
-    {
-      nameKey: 'pricing.whatsapp',
-      priceKZT: '40 000 ₸',
-      priceUSD: '$85',
-      requirementsKey: 'pricing.whatsapp.requirements',
-      popular: true,
-      isFullPack: false,
-    },
-    {
-      nameKey: 'pricing.fullpack',
-      priceKZT: '300 000 ₸',
-      priceUSD: '$600',
-      requirementsKey: 'pricing.fullpack.requirements',
-      popular: false,
-      isFullPack: true,
-    },
-  ];
-
-  const addons = [
-    { icon: Mic, key: 'pricing.addon.audio' },
-    { icon: Receipt, key: 'pricing.addon.checks' },
-    { icon: Database, key: 'pricing.addon.crm' },
-    { icon: Table, key: 'pricing.addon.tables' },
-    { icon: Bell, key: 'pricing.addon.notifications' },
-    { icon: MessageSquare, key: 'pricing.addon.direct' },
+  const baseAddons = [
+    { id: 'crm', icon: Database, key: 'pricing.addon.crm' },
+    { id: 'audio', icon: Mic, key: 'pricing.addon.audio' },
+    { id: 'checks', icon: Receipt, key: 'pricing.addon.checks' },
+    { id: 'tables', icon: Table, key: 'pricing.addon.tables' },
+    { id: 'notifications', icon: Bell, key: 'pricing.addon.notifications' },
   ];
 
   const socialAddons = [
-    { icon: MessageSquare, key: 'pricing.addon.comments' },
-    { icon: FileText, key: 'pricing.addon.files' },
+    { id: 'files', icon: MessageSquare, key: 'pricing.addon.files' },
+    { id: 'comments', icon: MessageSquare, key: 'pricing.addon.comments' },
   ];
 
-  const fullPackFeatures = [
-    'pricing.fullpack.feature1',
-    'pricing.fullpack.feature2',
-    'pricing.fullpack.feature3',
-    'pricing.fullpack.feature4',
-    'pricing.fullpack.feature5',
+  const plans = [
+    {
+      id: 'telegram',
+      nameKey: 'pricing.telegram',
+      baseKZT: 30000,
+      baseUSD: 60,
+      requirementsKey: 'pricing.telegram.requirements',
+      popular: false,
+      isAllPlatforms: false,
+      hasSocialAddons: false,
+    },
+    {
+      id: 'instagram',
+      nameKey: 'pricing.instagram',
+      baseKZT: 50000,
+      baseUSD: 95,
+      requirementsKey: 'pricing.instagram.requirements',
+      popular: false,
+      isAllPlatforms: false,
+      hasSocialAddons: true,
+    },
+    {
+      id: 'tiktok',
+      nameKey: 'pricing.tiktok',
+      baseKZT: 50000,
+      baseUSD: 95,
+      requirementsKey: 'pricing.tiktok.requirements',
+      popular: false,
+      isAllPlatforms: false,
+      hasSocialAddons: true,
+    },
+    {
+      id: 'whatsapp',
+      nameKey: 'pricing.whatsapp',
+      baseKZT: 50000,
+      baseUSD: 95,
+      requirementsKey: 'pricing.whatsapp.requirements',
+      popular: true,
+      isAllPlatforms: false,
+      hasSocialAddons: false,
+    },
+    {
+      id: 'allplatforms',
+      nameKey: 'pricing.allplatforms',
+      baseKZT: 300000,
+      baseUSD: 600,
+      requirementsKey: 'pricing.allplatforms.requirements',
+      popular: false,
+      isAllPlatforms: true,
+      hasSocialAddons: false,
+    },
   ];
+
+  const allPlatformsFeatures = [
+    'pricing.allplatforms.feature1',
+    'pricing.allplatforms.feature2',
+    'pricing.allplatforms.feature3',
+    'pricing.allplatforms.feature4',
+    'pricing.allplatforms.feature5',
+  ];
+
+  const [planStates, setPlanStates] = useState<Record<string, PlanState>>(() => {
+    const initial: Record<string, PlanState> = {};
+    plans.forEach(plan => {
+      initial[plan.id] = {
+        selectedAddons: [],
+        totalKZT: plan.baseKZT,
+        totalUSD: plan.baseUSD,
+      };
+    });
+    return initial;
+  });
+
+  const toggleAddon = (planId: string, addonId: string) => {
+    setPlanStates(prev => {
+      const plan = plans.find(p => p.id === planId)!;
+      const current = prev[planId];
+      const isSelected = current.selectedAddons.includes(addonId);
+      
+      const newAddons = isSelected
+        ? current.selectedAddons.filter(id => id !== addonId)
+        : [...current.selectedAddons, addonId];
+      
+      return {
+        ...prev,
+        [planId]: {
+          selectedAddons: newAddons,
+          totalKZT: plan.baseKZT + (newAddons.length * 10000),
+          totalUSD: plan.baseUSD + (newAddons.length * 20),
+        },
+      };
+    });
+  };
+
+  const handleOrder = (planId: string) => {
+    const plan = plans.find(p => p.id === planId)!;
+    const state = planStates[planId];
+    
+    const platformName = t(plan.nameKey);
+    const selectedFunctionNames = state.selectedAddons.map(addonId => {
+      const addon = [...baseAddons, ...socialAddons].find(a => a.id === addonId);
+      return addon ? t(addon.key) : addonId;
+    });
+    
+    const functionsText = selectedFunctionNames.length > 0 
+      ? selectedFunctionNames.join(', ') 
+      : '-';
+    
+    const description = `${t('pricing.orderFor')} ${platformName}. ${t('pricing.functions')} ${functionsText}. ${t('pricing.total')} ${state.totalKZT.toLocaleString()} ₸`;
+    
+    // Scroll to contact section and set description
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+      
+      // Set the description in the form
+      setTimeout(() => {
+        const ideaField = document.getElementById('idea') as HTMLTextAreaElement;
+        if (ideaField) {
+          ideaField.value = description;
+          ideaField.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+      }, 500);
+    }
+  };
+
+  const getAvailableAddons = (plan: typeof plans[0]) => {
+    if (plan.isAllPlatforms) return [];
+    if (plan.hasSocialAddons) return [...baseAddons, ...socialAddons];
+    return baseAddons;
+  };
 
   return (
     <section id="pricing" className="py-24 relative overflow-hidden">
@@ -84,14 +179,17 @@ const PricingSection = () => {
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 max-w-7xl mx-auto mb-16">
           {plans.map((plan, index) => {
             const { ref, isRevealed } = useScrollReveal(0.1);
+            const state = planStates[plan.id];
+            const availableAddons = getAvailableAddons(plan);
+
             return (
               <div
-                key={plan.nameKey}
+                key={plan.id}
                 ref={ref}
-                className={`relative p-6 rounded-2xl border backdrop-blur-sm transition-all duration-500 scroll-reveal-scale ${isRevealed ? 'revealed' : ''} ${
+                className={`relative p-5 rounded-2xl border backdrop-blur-sm transition-all duration-500 scroll-reveal-scale ${isRevealed ? 'revealed' : ''} ${
                   plan.popular
                     ? 'bg-gradient-to-b from-primary/20 to-card/80 border-primary/50 lg:scale-105'
                     : 'glass-card hover:border-primary/30'
@@ -109,35 +207,37 @@ const PricingSection = () => {
                 )}
 
                 {/* Plan Name */}
-                <h3 className="text-xl font-semibold text-foreground mb-4">
+                <h3 className="text-lg font-semibold text-foreground mb-3">
                   {t(plan.nameKey)}
                 </h3>
 
                 {/* Price */}
-                <div className="mb-6">
-                  <div className="text-3xl font-bold text-gradient">{plan.priceKZT}</div>
-                  <div className="text-muted-foreground text-sm">{plan.priceUSD}</div>
+                <div className="mb-4">
+                  <div className="text-2xl font-bold text-gradient">
+                    {state.totalKZT.toLocaleString()} ₸
+                  </div>
+                  <div className="text-muted-foreground text-sm">${state.totalUSD}</div>
                 </div>
 
                 {/* Requirements */}
                 <div className="mb-4">
-                  <p className="text-xs text-muted-foreground mb-3 font-medium">{t('pricing.requirements.needed')}</p>
-                  <ul className="space-y-2">
+                  <p className="text-xs text-muted-foreground mb-2 font-medium">{t('pricing.requirements.needed')}</p>
+                  <ul className="space-y-1.5">
                     {t(plan.requirementsKey).split('|').map((requirement, idx) => (
-                      <li key={idx} className="flex items-start gap-2 text-sm text-foreground">
-                        <Check className="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" />
+                      <li key={idx} className="flex items-start gap-2 text-xs text-foreground">
+                        <Check className="w-3 h-3 text-secondary flex-shrink-0 mt-0.5" />
                         <span>{requirement}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                {/* Full Pack Included Features */}
-                {plan.isFullPack && (
-                  <div className="mb-6 p-3 rounded-lg bg-accent/10 border border-accent/30">
-                    <p className="text-xs text-accent font-medium mb-2">{t('pricing.fullpack.includes')}</p>
+                {/* All Platforms Included Features */}
+                {plan.isAllPlatforms && (
+                  <div className="mb-4 p-3 rounded-lg bg-accent/10 border border-accent/30">
+                    <p className="text-xs text-accent font-medium mb-2">{t('pricing.allplatforms.includes')}</p>
                     <ul className="space-y-1">
-                      {fullPackFeatures.map((feature, idx) => (
+                      {allPlatformsFeatures.map((feature, idx) => (
                         <li key={idx} className="flex items-start gap-2 text-xs text-foreground">
                           <Star className="w-3 h-3 text-accent flex-shrink-0 mt-0.5" />
                           <span>{t(feature)}</span>
@@ -147,12 +247,51 @@ const PricingSection = () => {
                   </div>
                 )}
 
-                {!plan.isFullPack && <div className="mb-6" />}
+                {/* Add-ons for this plan */}
+                {availableAddons.length > 0 && (
+                  <div className="mb-4">
+                    <p className="text-xs text-muted-foreground mb-2 font-medium">
+                      {t('pricing.addons')} (+10 000 ₸ / $20)
+                    </p>
+                    <div className="space-y-1.5">
+                      {availableAddons.map((addon) => {
+                        const isSelected = state.selectedAddons.includes(addon.id);
+                        return (
+                          <button
+                            key={addon.id}
+                            onClick={() => toggleAddon(plan.id, addon.id)}
+                            className={`w-full flex items-center justify-between gap-2 p-2 rounded-lg text-xs transition-all duration-200 ${
+                              isSelected
+                                ? 'bg-primary/20 border border-primary/50 text-primary'
+                                : 'bg-background/50 border border-border/30 hover:border-primary/30 text-foreground'
+                            }`}
+                          >
+                            <div className="flex items-center gap-2">
+                              <addon.icon className="w-3 h-3 flex-shrink-0" />
+                              <span className="text-left">{t(addon.key)}</span>
+                            </div>
+                            {isSelected ? (
+                              <Minus className="w-3 h-3 flex-shrink-0" />
+                            ) : (
+                              <Plus className="w-3 h-3 flex-shrink-0" />
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    {state.selectedAddons.length > 0 && (
+                      <p className="text-xs text-primary mt-2">
+                        {t('pricing.selected')}: {state.selectedAddons.length}
+                      </p>
+                    )}
+                  </div>
+                )}
 
                 {/* CTA */}
                 <Button
                   variant={plan.popular ? 'glow' : 'outline'}
                   className="w-full"
+                  onClick={() => handleOrder(plan.id)}
                 >
                   {t('pricing.order')}
                 </Button>
@@ -161,54 +300,12 @@ const PricingSection = () => {
           })}
         </div>
 
-        {/* Add-ons Section */}
+        {/* Notes */}
         <div 
           ref={addonsRef}
           className={`max-w-4xl mx-auto scroll-reveal ${addonsRevealed ? 'revealed' : ''}`}
         >
-          <div className="p-6 md:p-8 rounded-2xl glass-card mb-6">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-              <h3 className="text-xl font-semibold text-foreground mb-2 md:mb-0">
-                {t('pricing.addons')}
-              </h3>
-              <div className="text-secondary font-semibold">
-                +5 000 ₸ / $10 {t('pricing.each')}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {addons.map((addon) => (
-                <div
-                  key={addon.key}
-                  className="flex items-center gap-3 p-3 rounded-lg bg-background/50 border border-border/30 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300"
-                >
-                  <addon.icon className="w-5 h-5 text-accent flex-shrink-0" />
-                  <span className="text-sm text-foreground">{t(addon.key)}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Social Media Add-ons */}
-          <div className="p-6 md:p-8 rounded-2xl glass-card mb-6">
-            <h3 className="text-lg font-semibold text-foreground mb-4">
-              {t('pricing.addons.social')}
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {socialAddons.map((addon) => (
-                <div
-                  key={addon.key}
-                  className="flex items-center gap-3 p-3 rounded-lg bg-background/50 border border-accent/30 hover:border-accent/50 hover:bg-accent/5 transition-all duration-300"
-                >
-                  <addon.icon className="w-5 h-5 text-accent flex-shrink-0" />
-                  <span className="text-sm text-foreground">{t(addon.key)}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Notes */}
-          <div className="text-center text-sm mt-6 space-y-2">
+          <div className="text-center text-sm space-y-2">
             <p className="text-foreground font-medium">{t('pricing.note1')}</p>
             <p className="text-muted-foreground">{t('pricing.note2')}</p>
           </div>

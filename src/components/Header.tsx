@@ -36,6 +36,11 @@ const Header = () => {
     setMobileMenuOpen(false);
   };
 
+  const getWhatsAppLink = () => {
+    const greeting = t('whatsapp.greeting');
+    return `https://wa.me/77066873167?text=${encodeURIComponent(greeting)}`;
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
       <div className="container mx-auto px-4">
@@ -85,12 +90,12 @@ const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* CTA Button */}
+            {/* CTA Button - WhatsApp */}
             <Button
               variant="glow"
               size="sm"
               className="hidden md:flex"
-              onClick={() => scrollToSection('#contact')}
+              onClick={() => window.open(getWhatsAppLink(), '_blank')}
             >
               {t('nav.propose')}
             </Button>
@@ -124,7 +129,7 @@ const Header = () => {
                 variant="glow"
                 size="sm"
                 className="mt-2 w-full"
-                onClick={() => scrollToSection('#contact')}
+                onClick={() => window.open(getWhatsAppLink(), '_blank')}
               >
                 {t('nav.propose')}
               </Button>

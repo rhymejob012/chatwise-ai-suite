@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,7 +15,7 @@ import instagramIcon from '@/assets/instagram-icon.png';
 import tiktokIcon from '@/assets/tiktok-icon.png';
 
 const ContactSection = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { toast } = useToast();
   const { ref: titleRef, isRevealed: titleRevealed } = useScrollReveal();
   const { ref: formRef, isRevealed: formRevealed } = useScrollReveal();
@@ -23,31 +23,55 @@ const ContactSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
+    phone: '',
     city: '',
     idea: '',
   });
+
+  // Listen for external updates to the idea field
+  useEffect(() => {
+    const ideaField = document.getElementById('idea') as HTMLTextAreaElement;
+    if (ideaField) {
+      const handleInput = (e: Event) => {
+        const target = e.target as HTMLTextAreaElement;
+        setFormData(prev => ({ ...prev, idea: target.value }));
+      };
+      ideaField.addEventListener('input', handleInput);
+      return () => ideaField.removeEventListener('input', handleInput);
+    }
+  }, []);
 
   const contacts = [
     { icon: phoneIcon, label: '+7 706 687 31 67', link: 'tel:+77066873167' },
     { icon: whatsappIcon, label: 'WhatsApp', link: 'https://wa.me/77066873167' },
     { icon: telegramIcon, label: 'Telegram', link: 'https://t.me/+77066873167' },
-    { icon: instagramIcon, label: 'Instagram @chatwise_kz', link: 'https://instagram.com/chatwise_kz' },
-    { icon: tiktokIcon, label: 'TikTok @chatwise_kz', link: 'https://tiktok.com/@chatwise_kz' },
+    { icon: instagramIcon, link: 'https://instagram.com/chatwise_kz' },
+    { icon: tiktokIcon, link: 'https://tiktok.com/@chatwise_kz' },
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    // Build WhatsApp message
+    const message = t('whatsapp.formMessage')
+      .replace('{name}', formData.name)
+      .replace('{phone}', formData.phone)
+      .replace('{city}', formData.city)
+      .replace('{description}', formData.idea);
+
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/77066873167?text=${encodedMessage}`;
+
+    // Open WhatsApp in new tab
+    window.open(whatsappUrl, '_blank');
 
     toast({
       title: t('contact.success'),
       description: '✨',
     });
 
-    setFormData({ name: '', city: '', idea: '' });
+    setFormData({ name: '', phone: '', city: '', idea: '' });
     setIsSubmitting(false);
   };
 
@@ -85,6 +109,21 @@ const ContactSection = () => {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="bg-background/50 border-border/50 focus:border-primary transition-colors"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-2">
+                    {t('contact.phone')}
+                  </label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    className="bg-background/50 border-border/50 focus:border-primary transition-colors"
+                    placeholder="+7 (___) ___-__-__"
                     required
                   />
                 </div>
@@ -141,8 +180,8 @@ const ContactSection = () => {
             className={`scroll-reveal-right ${contactsRevealed ? 'revealed' : ''}`}
           >
             <div className="p-8 rounded-2xl glass-card h-full">
-              <h3 className="text-xl font-semibold text-foreground mb-2">Контакты</h3>
-              <p className="text-sm text-muted-foreground mb-6">(ассистенты без ИИ)</p>
+              <h3 className="text-xl font-semibold text-foreground mb-2">{t('contact.contacts')}</h3>
+              <p className="text-sm text-muted-foreground mb-6">{t('contact.assistants')}</p>
               <div className="space-y-4">
                 {contacts.map((contact, index) => (
                   <a
@@ -152,10 +191,12 @@ const ContactSection = () => {
                     rel="noopener noreferrer"
                     className="flex items-center gap-4 p-4 rounded-xl bg-background/50 border border-border/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 group"
                   >
-                    <img src={contact.icon} alt={contact.label} className="w-8 h-8 object-contain" />
-                    <span className="text-foreground group-hover:text-primary transition-colors font-medium">
-                      {contact.label}
-                    </span>
+                    <img src={contact.icon} alt="" className="w-8 h-8 object-contain" />
+                    {contact.label && (
+                      <span className="text-foreground group-hover:text-primary transition-colors font-medium">
+                        {contact.label}
+                      </span>
+                    )}
                   </a>
                 ))}
               </div>
