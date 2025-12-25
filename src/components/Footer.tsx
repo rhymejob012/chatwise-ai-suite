@@ -3,15 +3,17 @@ import { Button } from '@/components/ui/button';
 import { Send } from 'lucide-react';
 import useScrollReveal from '@/hooks/useScrollReveal';
 import logo from '@/assets/logo.png';
+import instagramIcon from '@/assets/instagram-icon.png';
+import tiktokIcon from '@/assets/tiktok-icon.png';
 
 const Footer = () => {
   const { t, language } = useLanguage();
   const { ref, isRevealed } = useScrollReveal();
 
-  const getWhatsAppLink = () => {
-    const greeting = t('whatsapp.greeting');
-    return `https://wa.me/77066873167?text=${encodeURIComponent(greeting)}`;
-  };
+  const socialLinks = [
+    { icon: instagramIcon, label: t('contact.instagram'), link: 'https://www.instagram.com/chatwise_kz' },
+    { icon: tiktokIcon, label: t('contact.tiktok'), link: 'https://www.tiktok.com/@chatwise_kz' },
+  ];
 
   return (
     <footer className="py-16 border-t border-border/50 relative overflow-hidden">
@@ -34,6 +36,24 @@ const Footer = () => {
             <Send className="w-5 h-5 mr-2" />
             {t('footer.telegram')}
           </Button>
+
+          {/* Social Links */}
+          <div className="flex justify-center gap-4 mb-8">
+            {socialLinks.map((social, index) => (
+              <a
+                key={index}
+                href={social.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-background/50 border border-border/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 group"
+              >
+                <img src={social.icon} alt="" className="w-6 h-6 object-contain" />
+                <span className="text-foreground group-hover:text-primary transition-colors font-medium text-sm">
+                  {social.label}
+                </span>
+              </a>
+            ))}
+          </div>
 
           {/* Note */}
           <p className="text-muted-foreground text-sm max-w-2xl mx-auto mb-8">
