@@ -46,8 +46,6 @@ const ContactSection = () => {
     { icon: phoneIcon, label: '+7 706 687 31 67', link: 'tel:+77066873167' },
     { icon: whatsappIcon, label: 'WhatsApp', link: 'https://wa.me/77066873167' },
     { icon: telegramIcon, label: 'Telegram', link: 'https://t.me/+77066873167' },
-    { icon: instagramIcon, label: t('contact.instagram'), link: 'https://www.instagram.com/chatwise_kz' },
-    { icon: tiktokIcon, label: t('contact.tiktok'), link: 'https://www.tiktok.com/@chatwise_kz' },
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -63,7 +61,7 @@ const ContactSection = () => {
 
     try {
       const response = await fetch(
-        'https://script.google.com/macros/s/AKfycbxIMrskDuJ3radrC-urt5XXPx1PFIFTkt773zd2dim2P0imRTdWzGPv1XWbsaV15gwbgg/exec',
+        'https://script.google.com/macros/s/AKfycbwZUOyO9DKFavOeicGwNkJRKQvLHbVsmG47QTRrW9dLjBqLnE2qDj6oXcbtUDk_rz9wfw/exec',
         {
           method: 'POST',
           mode: 'no-cors',
