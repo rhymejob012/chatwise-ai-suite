@@ -113,13 +113,41 @@ const PricingSection = () => {
   });
 
   const togglePlatformSelection = (planId: string) => {
-    setPlatformStates(prev => ({
-      ...prev,
-      [planId]: {
-        ...prev[planId],
-        selected: !prev[planId].selected,
-      },
-    }));
+    const plan = plans.find(p => p.id === planId);
+    
+    if (plan?.isAllPlatforms) {
+      // If selecting "All Platforms", reset all other platforms
+      setPlatformStates(prev => {
+        const newState: Record<string, PlatformState> = {};
+        plans.forEach(p => {
+          if (p.id === 'allplatforms') {
+            newState[p.id] = {
+              selected: !prev[p.id].selected,
+              selectedAddons: [],
+            };
+          } else {
+            newState[p.id] = {
+              selected: false,
+              selectedAddons: [],
+            };
+          }
+        });
+        return newState;
+      });
+    } else {
+      // If selecting individual platform, deselect "All Platforms"
+      setPlatformStates(prev => ({
+        ...prev,
+        allplatforms: {
+          selected: false,
+          selectedAddons: [],
+        },
+        [planId]: {
+          ...prev[planId],
+          selected: !prev[planId].selected,
+        },
+      }));
+    }
   };
 
   const toggleAddon = (planId: string, addonId: string) => {

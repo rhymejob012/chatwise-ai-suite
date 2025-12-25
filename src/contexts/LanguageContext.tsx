@@ -120,9 +120,11 @@ const translations: Record<Language, Record<string, string>> = {
     'contact.city': 'Город',
     'contact.idea': 'Описание',
     'contact.submit': 'Отправить',
-    'contact.success': 'Спасибо! Мы свяжемся с вами.',
+    'contact.success': 'Спасибо! Ваш заказ принят, мы скоро свяжемся с вами ✨',
     'contact.contacts': 'Контакты',
     'contact.assistants': '(ассистенты без ИИ)',
+    'contact.instagram': 'Instagram',
+    'contact.tiktok': 'TikTok',
     
     // Footer
     'footer.telegram': 'Написать в ИИ Telegram',
@@ -244,9 +246,11 @@ const translations: Record<Language, Record<string, string>> = {
     'contact.city': 'Қала',
     'contact.idea': 'Сипаттама',
     'contact.submit': 'Жіберу',
-    'contact.success': 'Рахмет! Біз сізбен хабарласамыз.',
+    'contact.success': 'Рахмет! Тапсырысыңыз қабылданды, біз жақында хабарласамыз ✨',
     'contact.contacts': 'Байланыстар',
     'contact.assistants': '(AI-сіз көмекшілер)',
+    'contact.instagram': 'Instagram',
+    'contact.tiktok': 'TikTok',
     
     // Footer
     'footer.telegram': 'AI Telegram-ға жазу',
@@ -368,9 +372,11 @@ const translations: Record<Language, Record<string, string>> = {
     'contact.city': 'City',
     'contact.idea': 'Description',
     'contact.submit': 'Submit',
-    'contact.success': 'Thank you! We will contact you.',
+    'contact.success': 'Thank you! Your order has been received, we will contact you soon ✨',
     'contact.contacts': 'Contacts',
     'contact.assistants': '(assistants without AI)',
+    'contact.instagram': 'Instagram',
+    'contact.tiktok': 'TikTok',
     
     // Footer
     'footer.telegram': 'Message AI Telegram',
