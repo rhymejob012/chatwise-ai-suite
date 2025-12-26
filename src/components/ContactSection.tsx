@@ -61,21 +61,41 @@ const ContactSection = () => {
       description: formData.idea,
     };
 
-    try {
-      const response = await fetch(
-        'https://script.google.com/macros/s/AKfycbwZUOyO9DKFavOeicGwNkJRKQvLHbVsmG47QTRrW9dLjBqLnE2qDj6oXcbtUDk_rz9wfw/exec',
-        {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+    // Format message for Telegram
+    const telegramMessage = `📬 Новая заявка с сайта ChatWise\n\n👤 Имя: ${formData.name}\n📞 Телефон: ${formData.phone}\n🏙 Город: ${formData.city}\n📝 Описание заказа:\n${formData.idea}`;
 
-      // Since mode is 'no-cors', we can't read the response status
-      // We assume success if no error was thrown
+    try {
+      // Send to Google Sheets and Telegram simultaneously
+      await Promise.all([
+        // Google Sheets
+        fetch(
+          'https://script.google.com/macros/s/AKfycbwZUOyO9DKFavOeicGwNkJRKQvLHbVsmG47QTRrW9dLjBqLnE2qDj6oXcbtUDk_rz9wfw/exec',
+          {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+          }
+        ),
+        // Direct Telegram notification
+        fetch(
+          'https://api.telegram.org/bot7551239223:AAFmsPqFafxMxjYgoQxWNo482gG-7XhI4RI/sendMessage',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              chat_id: 494228161,
+              text: telegramMessage,
+            }),
+          }
+        ),
+      ]);
+
+      // Success
       setIsSubmitted(true);
       toast({
         title: t('contact.success'),

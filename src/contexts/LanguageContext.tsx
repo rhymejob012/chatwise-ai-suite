@@ -246,7 +246,7 @@ const translations: Record<Language, Record<string, string>> = {
     'contact.city': 'Қала',
     'contact.idea': 'Сипаттама',
     'contact.submit': 'Жіберу',
-    'contact.success': 'Рахмет! Тапсырысыңыз қабылданды, біз жақында хабарласамыз ✨',
+    'contact.success': 'Рахмет! Тапсырысыңыз қабылданды, біз сізге жақын арада хабарласамыз ✨',
     'contact.contacts': 'Байланыстар',
     'contact.assistants': '(AI-сіз көмекшілер)',
     'contact.instagram': 'Instagram',
