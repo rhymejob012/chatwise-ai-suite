@@ -19,7 +19,7 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.propose': 'Предложить идею',
     
     // Hero
-    'hero.title': 'Интеллектуальные AI-агенты для вашего бизнеса',
+    'hero.title': 'ChatWise — AI-агенты и чат-боты для автоматизации бизнеса',
     'hero.subtitle': 'Автоматизируем продажи и поддержку 24/7. Бот, который понимает голос, проверяет оплату и говорит на языке клиента.',
     'hero.cta': 'Протестировать бота в Telegram',
     'hero.platforms': 'Можем подключить бота на эти сервисы',
@@ -145,7 +145,7 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.propose': 'Идея ұсыну',
     
     // Hero
-    'hero.title': 'Сіздің бизнесіңіз үшін интеллектуалды AI-агенттер',
+    'hero.title': 'ChatWise — бизнесті автоматтандыруға арналған AI-агенттер мен чат-боттар',
     'hero.subtitle': 'Сатылымды және қолдауды 24/7 автоматтандырамыз. Дауысты түсінетін, төлемді тексеретін және клиент тілінде сөйлейтін бот.',
     'hero.cta': 'Telegram-да ботты тексеру',
     'hero.platforms': 'Ботты осы сервистерге қосуға болады',
@@ -271,7 +271,7 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.propose': 'Propose an Idea',
     
     // Hero
-    'hero.title': 'Intelligent AI Agents for Your Business',
+    'hero.title': 'ChatWise — AI Agents and Chatbots for Business Automation',
     'hero.subtitle': 'Automate sales and support 24/7. A bot that understands voice, verifies payments, and speaks your customer\'s language.',
     'hero.cta': 'Test Bot in Telegram',
     'hero.platforms': 'We can connect a bot to these services',
