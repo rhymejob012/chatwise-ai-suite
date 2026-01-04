@@ -1,6 +1,7 @@
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
+import SeoDescriptionSection from '@/components/SeoDescriptionSection';
 import StatsSection from '@/components/StatsSection';
 import AboutSection from '@/components/AboutSection';
 import PricingSection from '@/components/PricingSection';
@@ -15,6 +16,7 @@ const Index = () => {
         <Header />
         <main>
           <HeroSection />
+          <SeoDescriptionSection />
           <StatsSection />
           <AboutSection />
           <PricingSection />
