@@ -134,6 +134,17 @@ const translations: Record<Language, Record<string, string>> = {
     // WhatsApp Messages
     'whatsapp.greeting': 'Добрый день! пишу с сайта что бы подключить ИИ бота',
     'whatsapp.formMessage': 'Заявка с сайта ChatWise. Имя: {name}, Тел: {phone}, Город: {city}. Заказ: {description}',
+    
+    // SEO Description
+    'seo.title': 'О платформе ChatWise',
+    'seo.intro': 'ChatWise — это платформа для создания AI-агентов и чат-ботов для бизнеса.',
+    'seo.automation': 'С помощью ChatWise компании автоматизируют общение с клиентами, продажи и поддержку без увеличения штата.',
+    'seo.features': 'AI-агенты ChatWise умеют отвечать на вопросы клиентов, обрабатывать заказы, принимать заявки и вести диалог в мессенджерах и на сайте. Чат-боты работают 24/7, не пропускают обращения и повышают конверсию.',
+    'seo.audience': 'Платформа ChatWise подходит для малого и среднего бизнеса, онлайн-магазинов, сервисных компаний и экспертов.',
+    'seo.useCases': 'Вы можете использовать AI-ассистентов для продаж, поддержки клиентов, консультаций и обработки заявок.',
+    'seo.dataProcessing': 'AI-агенты могут принимать данные, анализировать запросы клиентов и передавать информацию менеджеру или в систему учета.',
+    'seo.benefits': 'С помощью ChatWise вы снижаете нагрузку на сотрудников, ускоряете ответы клиентам и повышаете качество сервиса. AI-чат-боты работают стабильно, масштабируются под рост бизнеса и не требуют сложной технической настройки.',
+    'seo.cta': 'ChatWise — это простой способ внедрить AI-агентов и чат-ботов в бизнес и начать автоматизацию уже сегодня.',
   },
   kz: {
     // Navigation
@@ -260,6 +271,17 @@ const translations: Record<Language, Record<string, string>> = {
     // WhatsApp Messages
     'whatsapp.greeting': 'Қайырлы күн! Сайттан ИИ ботын қосу үшін жазып тұрмын',
     'whatsapp.formMessage': 'ChatWise сайтынан өтінім. Аты: {name}, Тел: {phone}, Қала: {city}. Тапсырыс: {description}',
+    
+    // SEO Description
+    'seo.title': 'ChatWise платформасы туралы',
+    'seo.intro': 'ChatWise — бизнес үшін AI-агенттер мен чат-боттар жасауға арналған платформа.',
+    'seo.automation': 'ChatWise көмегімен компаниялар штатты көбейтпей клиенттермен қарым-қатынасты, сатылымдар мен қолдауды автоматтандырады.',
+    'seo.features': 'ChatWise AI-агенттері клиенттердің сұрақтарына жауап беруге, тапсырыстарды өңдеуге, өтінімдерді қабылдауға және мессенджерлер мен сайтта диалог жүргізуге қабілетті. Чат-боттар тәулік бойы жұмыс істейді, өтінімдерді жіберіп алмайды және конверсияны арттырады.',
+    'seo.audience': 'ChatWise платформасы шағын және орта бизнес, онлайн-дүкендер, сервистік компаниялар мен сарапшылар үшін қолайлы.',
+    'seo.useCases': 'AI-ассистенттерді сатылым, клиенттерді қолдау, кеңес беру және өтінімдерді өңдеу үшін пайдалана аласыз.',
+    'seo.dataProcessing': 'AI-агенттер деректерді қабылдап, клиенттер сұрауларын талдап, ақпаратты менеджерге немесе есеп жүйесіне жібере алады.',
+    'seo.benefits': 'ChatWise көмегімен сіз қызметкерлерге жүктемені азайтасыз, клиенттерге жауап беруді жылдамдатасыз және қызмет сапасын арттырасыз. AI-чат-боттар тұрақты жұмыс істейді, бизнес өсіміне сәйкес масштабталады және күрделі техникалық баптауды қажет етпейді.',
+    'seo.cta': 'ChatWise — AI-агенттер мен чат-боттарды бизнеске енгізудің және бүгіннен бастап автоматтандыруды бастаудың қарапайым жолы.',
   },
   en: {
     // Navigation
@@ -386,6 +408,17 @@ const translations: Record<Language, Record<string, string>> = {
     // WhatsApp Messages
     'whatsapp.greeting': 'Hello! I am writing from the website to connect an AI bot',
     'whatsapp.formMessage': 'Request from ChatWise website. Name: {name}, Phone: {phone}, City: {city}. Order: {description}',
+    
+    // SEO Description
+    'seo.title': 'About ChatWise Platform',
+    'seo.intro': 'ChatWise is a platform for creating AI agents and chatbots for business.',
+    'seo.automation': 'With ChatWise, companies automate customer communication, sales, and support without increasing staff.',
+    'seo.features': 'ChatWise AI agents can answer customer questions, process orders, accept requests, and conduct dialogues in messengers and on websites. Chatbots work 24/7, never miss inquiries, and increase conversion.',
+    'seo.audience': 'The ChatWise platform is suitable for small and medium businesses, online stores, service companies, and experts.',
+    'seo.useCases': 'You can use AI assistants for sales, customer support, consultations, and request processing.',
+    'seo.dataProcessing': 'AI agents can receive data, analyze customer requests, and transfer information to a manager or accounting system.',
+    'seo.benefits': 'With ChatWise, you reduce the workload on employees, speed up responses to customers, and improve service quality. AI chatbots work stably, scale with business growth, and do not require complex technical setup.',
+    'seo.cta': 'ChatWise is a simple way to implement AI agents and chatbots in business and start automation today.',
   },
 };
 
