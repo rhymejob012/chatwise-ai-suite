@@ -45,7 +45,7 @@ const ContactSection = () => {
   const contacts = [
     { icon: phoneIcon, label: '+7 706 687 31 67', link: 'tel:+77066873167' },
     { icon: whatsappIcon, label: 'WhatsApp', link: 'https://wa.me/77066873167' },
-    { icon: telegramIcon, label: 'Telegram', link: 'https://t.me/+77066873167' },
+    { icon: telegramIcon, label: 'Telegram', link: 'https://t.me/chatwisekzbot' },
     { icon: instagramIcon, label: t('contact.instagram'), link: 'https://www.instagram.com/chatwise_kz' },
     { icon: tiktokIcon, label: t('contact.tiktok'), link: 'https://www.tiktok.com/@chatwise_kz' },
   ];

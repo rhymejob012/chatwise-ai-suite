@@ -1,6 +1,4 @@
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Button } from '@/components/ui/button';
-import { Send } from 'lucide-react';
 import useScrollReveal from '@/hooks/useScrollReveal';
 import logo from '@/assets/logo.png';
 
@@ -19,17 +17,6 @@ const Footer = () => {
         className={`container mx-auto px-4 relative z-10 scroll-reveal ${isRevealed ? 'revealed' : ''}`}
       >
         <div className="max-w-4xl mx-auto text-center">
-          {/* CTA */}
-          <Button
-            variant="glow"
-            size="lg"
-            className="mb-8"
-            onClick={() => window.open('https://t.me/ChatWiseBot', '_blank')}
-          >
-            <Send className="w-5 h-5 mr-2" />
-            {t('footer.telegram')}
-          </Button>
-
           {/* Note */}
           <p className="text-muted-foreground text-sm max-w-2xl mx-auto mb-8">
             {t('footer.note')}
