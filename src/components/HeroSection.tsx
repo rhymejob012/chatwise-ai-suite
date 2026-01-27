@@ -1,6 +1,4 @@
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Button } from '@/components/ui/button';
-import { Send } from 'lucide-react';
 
 // Import images
 import robotImage from '@/assets/robot.png';
@@ -52,19 +50,6 @@ const HeroSection = () => {
             <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-10 animate-fade-in animation-delay-200">
               {t('hero.subtitle')}
             </p>
-
-            {/* CTA Button */}
-            <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4 mb-12 animate-fade-in animation-delay-300">
-              <Button
-                variant="glow"
-                size="lg"
-                className="text-base px-8 py-6 group"
-                onClick={() => window.open('https://t.me/ChatWiseBot', '_blank')}
-              >
-                <Send className="w-5 h-5 mr-2 group-hover:translate-x-1 transition-transform" />
-                {t('hero.cta')}
-              </Button>
-            </div>
 
             {/* Platform Icons */}
             <div className="animate-fade-in animation-delay-400">
