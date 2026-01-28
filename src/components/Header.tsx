@@ -47,7 +47,7 @@ const Header = () => {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <a href="#hero" className="flex items-center gap-2 group">
-            <img src={logo} alt="ChatWise Logo" className="w-10 h-10 md:w-12 md:h-12" />
+            <img src={logo} alt="ChatWise Logo" className="w-12 h-10 md:w-14 md:h-11 object-contain" />
             <span className="text-xl md:text-2xl font-bold text-foreground group-hover:text-primary transition-colors">
               ChatWise
             </span>
