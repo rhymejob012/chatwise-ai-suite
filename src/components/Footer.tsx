@@ -25,7 +25,7 @@ const Footer = () => {
           {/* Logo & Copyright */}
           <div className="flex flex-col items-center gap-4">
             <div className="flex items-center gap-2">
-              <img src={logo} alt="ChatWise Logo" className="w-10 h-10" />
+              <img src={logo} alt="ChatWise Logo" className="w-12 h-10 object-contain" />
               <span className="text-xl font-bold text-foreground">ChatWise</span>
             </div>
             <p className="text-muted-foreground text-xs">

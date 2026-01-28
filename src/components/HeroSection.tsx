@@ -84,11 +84,11 @@ const HeroSection = () => {
             <div className="absolute w-[350px] h-[350px] border border-secondary/20 rounded-full animate-spin-slow" style={{ animationDirection: 'reverse', animationDuration: '25s' }} />
             
             {/* Robot Image */}
-            <div className="relative z-10 animate-float">
+            <div className="relative z-10">
               <img 
                 src={robotImage} 
                 alt="AI Agent Robot"
-                className="w-72 md:w-96 lg:w-[450px] h-auto drop-shadow-2xl"
+                className="w-80 md:w-[420px] lg:w-[500px] h-auto drop-shadow-2xl"
               />
               
               {/* Floating particles */}
