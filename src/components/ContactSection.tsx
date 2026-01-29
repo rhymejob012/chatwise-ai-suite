@@ -43,8 +43,6 @@ const ContactSection = () => {
   }, []);
 
   const contacts = [
-    { icon: phoneIcon, label: '+7 706 687 31 67', link: 'tel:+77066873167' },
-    { icon: whatsappIcon, label: 'WhatsApp', link: 'https://wa.me/77066873167' },
     { icon: telegramIcon, label: 'Telegram', link: 'https://t.me/chatwisekzbot' },
     { icon: instagramIcon, label: t('contact.instagram'), link: 'https://www.instagram.com/chatwise_kz' },
     { icon: tiktokIcon, label: t('contact.tiktok'), link: 'https://www.tiktok.com/@chatwise_kz' },
@@ -228,8 +226,7 @@ const ContactSection = () => {
             className={`scroll-reveal-right ${contactsRevealed ? 'revealed' : ''}`}
           >
             <div className="p-8 rounded-2xl glass-card h-full">
-              <h3 className="text-xl font-semibold text-foreground mb-2">{t('contact.contacts')}</h3>
-              <p className="text-sm text-muted-foreground mb-6">{t('contact.assistants')}</p>
+              <h3 className="text-xl font-semibold text-foreground mb-6">{t('contact.contacts')}</h3>
               <div className="space-y-4">
                 {contacts.map((contact, index) => (
                   <a

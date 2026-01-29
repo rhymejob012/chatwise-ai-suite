@@ -36,9 +36,25 @@ const Header = () => {
     setMobileMenuOpen(false);
   };
 
-  const getWhatsAppLink = () => {
-    const greeting = t('whatsapp.greeting');
-    return `https://wa.me/77066873167?text=${encodeURIComponent(greeting)}`;
+  const handleProposeIdea = () => {
+    // Scroll to contact section
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+      
+      // Pre-fill the idea field after a short delay
+      setTimeout(() => {
+        const ideaField = document.getElementById('idea') as HTMLTextAreaElement;
+        if (ideaField) {
+          ideaField.value = t('propose.prefill');
+          ideaField.dispatchEvent(new Event('input', { bubbles: true }));
+          ideaField.focus();
+          // Move cursor to end
+          ideaField.setSelectionRange(ideaField.value.length, ideaField.value.length);
+        }
+      }, 500);
+    }
+    setMobileMenuOpen(false);
   };
 
   return (
@@ -90,12 +106,12 @@ const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* CTA Button - WhatsApp */}
+            {/* CTA Button - Propose Idea */}
             <Button
               variant="glow"
               size="sm"
               className="hidden md:flex"
-              onClick={() => window.open(getWhatsAppLink(), '_blank')}
+              onClick={handleProposeIdea}
             >
               {t('nav.propose')}
             </Button>
@@ -129,7 +145,7 @@ const Header = () => {
                 variant="glow"
                 size="sm"
                 className="mt-2 w-full"
-                onClick={() => window.open(getWhatsAppLink(), '_blank')}
+                onClick={handleProposeIdea}
               >
                 {t('nav.propose')}
               </Button>

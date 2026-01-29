@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export type Language = 'ru' | 'kz' | 'en';
 
@@ -122,7 +123,6 @@ const translations: Record<Language, Record<string, string>> = {
     'contact.submit': 'Отправить',
     'contact.success': 'Спасибо! Ваш заказ принят, мы скоро свяжемся с вами ✨',
     'contact.contacts': 'Контакты',
-    'contact.assistants': '(ассистенты без ИИ)',
     'contact.instagram': 'Instagram',
     'contact.tiktok': 'TikTok',
     
@@ -145,6 +145,9 @@ const translations: Record<Language, Record<string, string>> = {
     'seo.dataProcessing': 'AI-агенты могут принимать данные, анализировать запросы клиентов и передавать информацию менеджеру или в систему учета.',
     'seo.benefits': 'С помощью ChatWise вы снижаете нагрузку на сотрудников, ускоряете ответы клиентам и повышаете качество сервиса. AI-чат-боты работают стабильно, масштабируются под рост бизнеса и не требуют сложной технической настройки.',
     'seo.cta': 'ChatWise — это простой способ внедрить AI-агентов и чат-ботов в бизнес и начать автоматизацию уже сегодня.',
+
+    // Propose idea
+    'propose.prefill': 'Хочу предложить такую идею для генераций:\n',
   },
   kz: {
     // Navigation
@@ -248,7 +251,7 @@ const translations: Record<Language, Record<string, string>> = {
     'faq.q4': 'Қандай платформалар қолдау көрсетіледі?',
     'faq.a4': 'ChatWise WhatsApp, Telegram, Instagram және TikTok-пен жұмыс істейді. Сұраныс бойынша басқа платформалармен интеграция мүмкін.',
     'faq.q5': 'Картадан төлем қалай алынады?',
-    'faq.a5': 'Бот жасау кезінде сізге сілтеме береміз, оны клиент өз картасын қолмен қосады. Жұмыс аяқталғаннан кейін ол қаласа құпия сөздерді өзгерте алады.',
+    'faq.a5': 'Ботты жасау кезінде біз сізге сілтеме береміз, клиент өзі картасын қолмен қосады. Жұмыс аяқталғаннан кейін ол қалауы бойынша құпия сөздерді өзгертіп, қол жетімділікті жаба алады.',
     
     // Contact
     'contact.title': 'Біздің байланыстар',
@@ -257,31 +260,33 @@ const translations: Record<Language, Record<string, string>> = {
     'contact.city': 'Қала',
     'contact.idea': 'Сипаттама',
     'contact.submit': 'Жіберу',
-    'contact.success': 'Рахмет! Тапсырысыңыз қабылданды, біз сізге жақын арада хабарласамыз ✨',
+    'contact.success': 'Рахмет! Тапсырысыңыз қабылданды, жақында хабарласамыз ✨',
     'contact.contacts': 'Байланыстар',
-    'contact.assistants': '(AI-сіз көмекшілер)',
     'contact.instagram': 'Instagram',
     'contact.tiktok': 'TikTok',
     
     // Footer
     'footer.telegram': 'AI Telegram-ға жазу',
-    'footer.note': 'Біздің бот — AI-автоматтандырудың тірі мысалы: үш тілді, құны есептелген және чектерді қабылдайды.',
+    'footer.note': 'Біздің бот — AI-автоматтандырудың тірі мысалы: үш тілді, бағаны есептеу және чектерді қабылдау.',
     'footer.rights': '© 2024 ChatWise. Барлық құқықтар қорғалған.',
     
     // WhatsApp Messages
-    'whatsapp.greeting': 'Қайырлы күн! Сайттан ИИ ботын қосу үшін жазып тұрмын',
+    'whatsapp.greeting': 'Қайырлы күн! AI ботты қосу үшін сайттан жазып отырмын',
     'whatsapp.formMessage': 'ChatWise сайтынан өтінім. Аты: {name}, Тел: {phone}, Қала: {city}. Тапсырыс: {description}',
     
     // SEO Description
     'seo.title': 'ChatWise платформасы туралы',
-    'seo.intro': 'ChatWise — бизнес үшін AI-агенттер мен чат-боттар жасауға арналған платформа.',
-    'seo.automation': 'ChatWise көмегімен компаниялар штатты көбейтпей клиенттермен қарым-қатынасты, сатылымдар мен қолдауды автоматтандырады.',
-    'seo.features': 'ChatWise AI-агенттері клиенттердің сұрақтарына жауап беруге, тапсырыстарды өңдеуге, өтінімдерді қабылдауға және мессенджерлер мен сайтта диалог жүргізуге қабілетті. Чат-боттар тәулік бойы жұмыс істейді, өтінімдерді жіберіп алмайды және конверсияны арттырады.',
-    'seo.audience': 'ChatWise платформасы шағын және орта бизнес, онлайн-дүкендер, сервистік компаниялар мен сарапшылар үшін қолайлы.',
-    'seo.useCases': 'AI-ассистенттерді сатылым, клиенттерді қолдау, кеңес беру және өтінімдерді өңдеу үшін пайдалана аласыз.',
-    'seo.dataProcessing': 'AI-агенттер деректерді қабылдап, клиенттер сұрауларын талдап, ақпаратты менеджерге немесе есеп жүйесіне жібере алады.',
-    'seo.benefits': 'ChatWise көмегімен сіз қызметкерлерге жүктемені азайтасыз, клиенттерге жауап беруді жылдамдатасыз және қызмет сапасын арттырасыз. AI-чат-боттар тұрақты жұмыс істейді, бизнес өсіміне сәйкес масштабталады және күрделі техникалық баптауды қажет етпейді.',
-    'seo.cta': 'ChatWise — AI-агенттер мен чат-боттарды бизнеске енгізудің және бүгіннен бастап автоматтандыруды бастаудың қарапайым жолы.',
+    'seo.intro': 'ChatWise — бизнеске арналған AI-агенттер мен чат-боттарды құру платформасы.',
+    'seo.automation': 'ChatWise көмегімен компаниялар штатты көбейтпестен клиенттермен қарым-қатынасты, сатылымды және қолдауды автоматтандырады.',
+    'seo.features': 'ChatWise AI-агенттері клиенттердің сұрақтарына жауап береді, тапсырыстарды өңдейді, өтінімдерді қабылдайды және мессенджерлер мен сайтта диалог жүргізеді. Чат-боттар 24/7 жұмыс істейді, өтінімдерді жіберіп алмайды және конверсияны арттырады.',
+    'seo.audience': 'ChatWise платформасы шағын және орта бизнеске, онлайн-дүкендерге, сервистік компанияларға және сарапшыларға жарайды.',
+    'seo.useCases': 'Сіз AI-ассистенттерді сатылымға, клиенттерді қолдауға, кеңестерге және өтінімдерді өңдеуге пайдалана аласыз.',
+    'seo.dataProcessing': 'AI-агенттер деректерді қабылдай алады, клиенттердің сұрауларын талдайды және ақпаратты менеджерге немесе есеп жүйесіне жібереді.',
+    'seo.benefits': 'ChatWise көмегімен сіз қызметкерлерге түсетін жүктемені азайтасыз, клиенттерге жауаптарды жеделдетесіз және қызмет сапасын арттырасыз. AI-чат-боттар тұрақты жұмыс істейді, бизнестің өсуіне қарай масштабталады және күрделі техникалық баптауды талап етпейді.',
+    'seo.cta': 'ChatWise — бизнеске AI-агенттер мен чат-боттарды енгізу және автоматтандыруды бүгін бастаудың қарапайым жолы.',
+
+    // Propose idea
+    'propose.prefill': 'Генерациялар үшін мынадай идея ұсынғым келеді:\n',
   },
   en: {
     // Navigation
@@ -290,20 +295,20 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.pricing': 'Pricing',
     'nav.faq': 'FAQ',
     'nav.contact': 'Contact',
-    'nav.propose': 'Propose an Idea',
+    'nav.propose': 'Suggest an Idea',
     
     // Hero
     'hero.title': 'ChatWise — AI Agents and Chatbots for Business Automation',
     'hero.subtitle': 'Automate sales and support 24/7. A bot that understands voice, verifies payments, and speaks your customer\'s language.',
-    'hero.cta': 'Test Bot in Telegram',
-    'hero.platforms': 'We can connect a bot to these services',
+    'hero.cta': 'Test the Bot on Telegram',
+    'hero.platforms': 'We can connect the bot to these services',
     
     // Stats
     'stats.title': 'Automation Efficiency',
     'stats.before': 'Before Automation',
     'stats.after': 'With ChatWise AI',
     'stats.result': 'Result',
-    'stats.response': 'Response Time',
+    'stats.response': 'Response Speed',
     'stats.response.before': '5-30 minutes',
     'stats.response.after': '<1 minute',
     'stats.response.result': 'Instant',
@@ -327,11 +332,11 @@ const translations: Record<Language, Record<string, string>> = {
     // About
     'about.title': 'Why Choose ChatWise',
     'about.feature1.title': 'Multilingual',
-    'about.feature1.desc': 'Bot communicates in Russian, Kazakh, and English',
+    'about.feature1.desc': 'The bot communicates in Russian, Kazakh, and English',
     'about.feature2.title': 'Voice Messages',
     'about.feature2.desc': 'Recognition and processing of customer voice messages',
     'about.feature3.title': 'Payment Verification',
-    'about.feature3.desc': 'Automatic receipt verification and payment confirmation',
+    'about.feature3.desc': 'Automatic check verification and payment confirmation',
     'about.feature4.title': 'CRM Integration',
     'about.feature4.desc': 'Real-time synchronization with your CRM system',
     
@@ -340,21 +345,21 @@ const translations: Record<Language, Record<string, string>> = {
     'pricing.requirements.title': 'What you need to connect',
     'pricing.requirements.needed': 'Requirements:',
     'pricing.telegram': 'Telegram AI',
-    'pricing.telegram.requirements': 'Bot API token|AI task description|GPT or Gemini token|Facebook login & password|Gmail account',
+    'pricing.telegram.requirements': 'Bot API token|AI task description|GPT or Gemini token|Facebook login and password|Gmail account',
     'pricing.instagram': 'Instagram AI',
-    'pricing.instagram.requirements': 'Account login & password|Facebook login & password|AI task description|GPT or Gemini token|Gmail account',
+    'pricing.instagram.requirements': 'Account login and password|Facebook login and password|AI task description|GPT or Gemini token|Gmail account',
     'pricing.tiktok': 'TikTok AI',
-    'pricing.tiktok.requirements': 'Account login & password|Facebook login & password|AI task description|GPT or Gemini token|Gmail account',
+    'pricing.tiktok.requirements': 'Account login and password|Facebook login and password|AI task description|GPT or Gemini token|Gmail account',
     'pricing.whatsapp': 'WhatsApp AI',
-    'pricing.whatsapp.requirements': 'Facebook login & password|AI task description|GPT or Gemini token|IE/LLP document or website|Gmail account',
+    'pricing.whatsapp.requirements': 'Facebook login and password|AI task description|GPT or Gemini token|Business document or website|Gmail account',
     'pricing.allplatforms': 'All Platforms',
-    'pricing.allplatforms.requirements': 'Facebook account|GPT or Gemini token|IE/LLP document|Telegram bot token|Gmail account',
+    'pricing.allplatforms.requirements': 'Facebook account|GPT or Gemini token|Business document|Telegram bot token|Gmail account',
     'pricing.allplatforms.includes': 'Included Features',
     'pricing.allplatforms.feature1': 'Audio message transcription',
     'pricing.allplatforms.feature2': 'Receipt verification',
     'pricing.allplatforms.feature3': 'Admin notifications',
     'pricing.allplatforms.feature4': 'CRM system',
-    'pricing.allplatforms.feature5': '+2 free maintenance services',
+    'pricing.allplatforms.feature5': '+2 free maintenance sessions',
     'pricing.popular': 'Popular',
     'pricing.addons': 'Additional Features',
     'pricing.addon.crm': 'CRM Integration',
@@ -362,30 +367,30 @@ const translations: Record<Language, Record<string, string>> = {
     'pricing.addon.checks': 'Receipt Verification',
     'pricing.addon.tables': 'Data Collection to Table',
     'pricing.addon.notifications': 'Admin Notifications',
-    'pricing.addons.social': 'For social media separately',
+    'pricing.addons.social': 'For social networks separately',
     'pricing.addon.comments': 'Reply to Comments',
     'pricing.addon.files': 'Send Files by Keywords',
-    'pricing.note1': 'First technical service is free, then 10,000 ₸',
-    'pricing.note2': 'Monthly AI service: $25–55/month (charged to client\'s card, not included in tariff)',
+    'pricing.note1': 'First technical maintenance is free, then 10,000 ₸',
+    'pricing.note2': 'Monthly AI service: $25–55/mo (charged to client\'s card, not included in plan)',
     'pricing.each': 'each',
-    'pricing.order': 'Order Now',
+    'pricing.order': 'Order',
     'pricing.orderFor': 'Connecting for:',
-    'pricing.functions': 'Functions:',
+    'pricing.functions': 'Features:',
     'pricing.total': 'Total:',
     'pricing.selected': 'Selected',
     
     // FAQ
     'faq.title': 'Frequently Asked Questions',
-    'faq.q1': 'What are the requirements to connect a bot?',
-    'faq.a1': 'To connect you need: Gmail account, Facebook (for Instagram/WhatsApp), Telegram bot token, IE/LLP for official use.',
+    'faq.q1': 'What are the requirements for connecting a bot?',
+    'faq.a1': 'Connection requires: Gmail account, Facebook (for Instagram/WhatsApp), Telegram bot token, business registration for official use.',
     'faq.q2': 'How long does setup take?',
     'faq.a2': 'Bot setup and launch takes 1 to 3 business days depending on integration complexity.',
     'faq.q3': 'Can the bot make mistakes?',
     'faq.a3': 'AI minimizes errors to 0%. In complex cases, the bot automatically transfers the request to a live operator.',
-    'faq.q4': 'What platforms are supported?',
+    'faq.q4': 'Which platforms are supported?',
     'faq.a4': 'ChatWise works with WhatsApp, Telegram, Instagram, and TikTok. Integration with other platforms is available upon request.',
     'faq.q5': 'How will payment be charged from the card?',
-    'faq.a5': 'When creating a bot, we will provide you with a link where the client adds their card manually. After work is completed, they can change passwords if desired to close access.',
+    'faq.a5': 'When creating the bot, we will provide you with a link where the client adds their card manually. After completion, they can change passwords if desired to revoke access.',
     
     // Contact
     'contact.title': 'Our Contacts',
@@ -396,36 +401,90 @@ const translations: Record<Language, Record<string, string>> = {
     'contact.submit': 'Submit',
     'contact.success': 'Thank you! Your order has been received, we will contact you soon ✨',
     'contact.contacts': 'Contacts',
-    'contact.assistants': '(assistants without AI)',
     'contact.instagram': 'Instagram',
     'contact.tiktok': 'TikTok',
     
     // Footer
-    'footer.telegram': 'Message AI Telegram',
-    'footer.note': 'Our bot is a living example of AI automation: trilingual, with cost calculation and receipt processing.',
+    'footer.telegram': 'Write to AI Telegram',
+    'footer.note': 'Our bot is a live example of AI automation: trilingual, with cost calculation and receipt acceptance.',
     'footer.rights': '© 2024 ChatWise. All rights reserved.',
     
     // WhatsApp Messages
-    'whatsapp.greeting': 'Hello! I am writing from the website to connect an AI bot',
+    'whatsapp.greeting': 'Hello! I\'m writing from the website to connect an AI bot',
     'whatsapp.formMessage': 'Request from ChatWise website. Name: {name}, Phone: {phone}, City: {city}. Order: {description}',
     
     // SEO Description
     'seo.title': 'About ChatWise Platform',
     'seo.intro': 'ChatWise is a platform for creating AI agents and chatbots for business.',
     'seo.automation': 'With ChatWise, companies automate customer communication, sales, and support without increasing staff.',
-    'seo.features': 'ChatWise AI agents can answer customer questions, process orders, accept requests, and conduct dialogues in messengers and on websites. Chatbots work 24/7, never miss inquiries, and increase conversion.',
+    'seo.features': 'ChatWise AI agents can answer customer questions, process orders, accept requests, and conduct dialogues in messengers and on the website. Chatbots work 24/7, don\'t miss inquiries, and increase conversion.',
     'seo.audience': 'The ChatWise platform is suitable for small and medium businesses, online stores, service companies, and experts.',
     'seo.useCases': 'You can use AI assistants for sales, customer support, consultations, and request processing.',
     'seo.dataProcessing': 'AI agents can receive data, analyze customer requests, and transfer information to a manager or accounting system.',
-    'seo.benefits': 'With ChatWise, you reduce the workload on employees, speed up responses to customers, and improve service quality. AI chatbots work stably, scale with business growth, and do not require complex technical setup.',
-    'seo.cta': 'ChatWise is a simple way to implement AI agents and chatbots in business and start automation today.',
+    'seo.benefits': 'With ChatWise, you reduce the workload on employees, speed up customer responses, and improve service quality. AI chatbots work reliably, scale with business growth, and don\'t require complex technical setup.',
+    'seo.cta': 'ChatWise is an easy way to implement AI agents and chatbots in business and start automation today.',
+
+    // Propose idea
+    'propose.prefill': 'I want to suggest this idea for generations:\n',
   },
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
+const validLanguages: Language[] = ['ru', 'kz', 'en'];
+
+const getLanguageFromPath = (pathname: string): Language | null => {
+  const segments = pathname.split('/').filter(Boolean);
+  const langSegment = segments[0] as Language;
+  return validLanguages.includes(langSegment) ? langSegment : null;
+};
+
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [language, setLanguage] = useState<Language>('ru');
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  const [language, setLanguageState] = useState<Language>(() => {
+    const langFromPath = getLanguageFromPath(location.pathname);
+    if (langFromPath) return langFromPath;
+    
+    const savedLang = localStorage.getItem('chatwise-language') as Language;
+    return validLanguages.includes(savedLang) ? savedLang : 'ru';
+  });
+
+  useEffect(() => {
+    const langFromPath = getLanguageFromPath(location.pathname);
+    if (langFromPath && langFromPath !== language) {
+      setLanguageState(langFromPath);
+      localStorage.setItem('chatwise-language', langFromPath);
+    }
+  }, [location.pathname]);
+
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    localStorage.setItem('chatwise-language', lang);
+    
+    // Navigate to the new language URL
+    const currentPath = location.pathname;
+    const currentHash = location.hash;
+    const langFromPath = getLanguageFromPath(currentPath);
+    
+    let newPath: string;
+    if (langFromPath) {
+      // Replace existing language prefix
+      const pathWithoutLang = currentPath.replace(`/${langFromPath}`, '');
+      newPath = `/${lang}${pathWithoutLang || '/'}`;
+    } else {
+      // Add language prefix
+      newPath = `/${lang}${currentPath === '/' ? '/' : currentPath}`;
+    }
+    
+    // Ensure path ends correctly
+    if (newPath === `/${lang}` || newPath === `/${lang}/`) {
+      newPath = `/${lang}/`;
+    }
+    
+    navigate(newPath + currentHash, { replace: true });
+  };
 
   const t = (key: string): string => {
     return translations[language][key] || key;
@@ -440,7 +499,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
 
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useLanguage must be used within a LanguageProvider');
   }
   return context;
