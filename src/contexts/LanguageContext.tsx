@@ -17,7 +17,7 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.pricing': 'Прайс',
     'nav.faq': 'Вопросы',
     'nav.contact': 'Контакты',
-    'nav.propose': 'Предложить идею',
+    'nav.propose': 'Предложить свою идею',
     
     // Hero
     'hero.title': 'ChatWise — AI-агенты и чат-боты для автоматизации бизнеса',

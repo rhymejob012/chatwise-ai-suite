@@ -110,7 +110,7 @@ const Header = () => {
             <Button
               variant="glow"
               size="sm"
-              className="hidden md:flex"
+              className="hidden md:flex animate-glow"
               onClick={handleProposeIdea}
             >
               {t('nav.propose')}
@@ -144,7 +144,7 @@ const Header = () => {
               <Button
                 variant="glow"
                 size="sm"
-                className="mt-2 w-full"
+                className="mt-2 w-full animate-glow"
                 onClick={handleProposeIdea}
               >
                 {t('nav.propose')}
