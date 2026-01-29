@@ -8,11 +8,11 @@ import { Send, Sparkles, Loader2 } from 'lucide-react';
 import useScrollReveal from '@/hooks/useScrollReveal';
 
 // Import social icons
-import phoneIcon from '@/assets/phone-icon.png';
-import whatsappIcon from '@/assets/whatsapp-icon.png';
 import telegramIcon from '@/assets/telegram-icon.png';
 import instagramIcon from '@/assets/instagram-icon.png';
 import tiktokIcon from '@/assets/tiktok-icon.png';
+import upworkIcon from '@/assets/upwork-icon.png';
+import fiverrIcon from '@/assets/fiverr-icon.png';
 
 const ContactSection = () => {
   const { t, language } = useLanguage();
@@ -46,6 +46,8 @@ const ContactSection = () => {
     { icon: telegramIcon, label: 'Telegram', link: 'https://t.me/chatwisekzbot' },
     { icon: instagramIcon, label: t('contact.instagram'), link: 'https://www.instagram.com/chatwise_kz' },
     { icon: tiktokIcon, label: t('contact.tiktok'), link: 'https://www.tiktok.com/@chatwise_kz' },
+    { icon: upworkIcon, label: 'Upwork', link: 'https://www.upwork.com/freelancers/~013b92f2e12953e2f2' },
+    { icon: fiverrIcon, label: 'Fiverr', link: 'https://www.fiverr.com/rhyme012/buying?source=avatar_menu_profile' },
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
